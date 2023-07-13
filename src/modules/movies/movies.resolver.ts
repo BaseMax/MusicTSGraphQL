@@ -5,7 +5,7 @@ import {
   Query,
   ResolveField,
   Resolver,
-} from '@nestjs/graphql';
+} from 'type-graphql';
 import { CursorBasedPagination } from 'src/utils/cursor-pagination';
 import { AuthenticatedDec } from '../auth/authenticated-user.decorator';
 import { UserAuthPayload } from '../auth/dto/user.data';

@@ -5,7 +5,7 @@ import {
   Float,
   Int,
   registerEnumType,
-} from '@nestjs/graphql';
+} from 'type-graphql';
 import { Artist } from '../artists/artist.model';
 import { Comment } from '../comments/comment.model';
 import { Genre } from '../genres/genre.model';

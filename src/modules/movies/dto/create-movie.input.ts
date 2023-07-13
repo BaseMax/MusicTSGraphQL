@@ -1,4 +1,4 @@
-import { InputType, Field, Float, Int } from '@nestjs/graphql';
+import { InputType, Field, Float, Int } from 'type-graphql';
 import { AssetType, Contribution, LanguageRelation } from '../movie.model';
 import {
   IsIn,

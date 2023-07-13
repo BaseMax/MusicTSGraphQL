@@ -6,7 +6,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { GqlExecutionContext } from '@nestjs/graphql';
+import { GqlExecutionContext } from 'type-graphql';
 import { JwtService } from '@nestjs/jwt';
 import { Role } from '../users/user.model';
 

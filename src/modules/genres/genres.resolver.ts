@@ -5,7 +5,7 @@ import {
   Query,
   ResolveField,
   Resolver,
-} from '@nestjs/graphql';
+} from 'type-graphql';
 import { MinRole } from '../auth/min-role.decorator';
 import { Private } from '../auth/optional.decorator';
 import { Role } from '../users/user.model';

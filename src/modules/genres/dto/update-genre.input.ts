@@ -1,4 +1,4 @@
-import { Field, ID, InputType } from '@nestjs/graphql';
+import { Field, ID, InputType } from 'type-graphql';
 import { CreateGenreInput } from './create-genre.input';
 
 @InputType()

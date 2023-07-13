@@ -1,4 +1,4 @@
-import { Field, InputType, OmitType } from '@nestjs/graphql';
+import { Field, InputType, OmitType } from 'type-graphql';
 import { CreateCommentInput } from './create-comment.input';
 
 @InputType()

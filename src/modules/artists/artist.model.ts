@@ -1,4 +1,4 @@
-import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { ObjectType, Field, ID } from 'type-graphql';
 import { Movie } from '../movies/movie.model';
 
 @ObjectType()

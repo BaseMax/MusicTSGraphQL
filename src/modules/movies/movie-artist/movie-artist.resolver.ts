@@ -1,4 +1,4 @@
-import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
+import { Parent, ResolveField, Resolver } from 'type-graphql';
 import { ArtistsService } from 'src/modules/artists/artists.service';
 import { MovieArtist } from '../movie.model';
 

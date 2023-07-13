@@ -1,4 +1,4 @@
-import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Context, Mutation, Query, Resolver } from 'type-graphql';
 import { Role, User } from '../users/user.model';
 import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';

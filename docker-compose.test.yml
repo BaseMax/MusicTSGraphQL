@@ -1,0 +1,15 @@
+version: "3.6"
+services:
+    app:
+        build:
+            target: test
+        command: ["yarn", "test:e2e"]
+        environment:
+            - DATABASE_URL=postgres://postgres:postgres@db:5432/test
+            - NODE_ENV=testing
+    db:
+        environment:
+            POSTGRES_DB: test
+    migratedb:
+        environment:
+            - DATABASE_URL=postgres://postgres:postgres@db:5432/test

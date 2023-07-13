@@ -1,0 +1,14 @@
+version: "3.6"
+services:
+    app:
+        build:
+            target: development
+        environment:
+            - DATABASE_URL=postgres://postgres:postgres@db:5432/dev
+            - NODE_ENV=development
+    db:
+        environment:
+            POSTGRES_DB: dev
+    migratedb:
+        environment:
+            - DATABASE_URL=postgres://postgres:postgres@db:5432/dev

@@ -1,0 +1,75 @@
+version: "3.6"
+services:
+    app:
+        build:
+            context: .
+        depends_on:
+            migratedb:
+                condition: service_completed_successfully
+            createbuckets:
+                condition: service_completed_successfully
+            db:
+                condition: service_started
+
+        volumes:
+            - ./src:/app/src
+            - ./prisma:/app/prisma
+        ports:
+            - 3000:3000
+        environment:
+            - SECRET=secret
+            - S3_URI=http://minio:9000
+            - S3_ACCESS_KEY=minio-username
+            - S3_SECRET_KEY=minio-password
+    db:
+        image: postgres:14
+        ports:
+            - 5432:5432
+        environment:
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_USER: postgres
+    migratedb:
+        image: app:latest
+        command:
+            [
+                "./wait-for-it/wait-for-it.sh",
+                "db:5432",
+                "--",
+                "npx",
+                "prisma",
+                "db",
+                "push",
+            ]
+        build:
+            context: .
+            target: development
+        depends_on:
+            db:
+                condition: service_started
+
+    minio:
+
+        image: minio/minio
+        ports:
+            - "9000:9000"
+            - "9001:9001"
+        environment:
+            - "MINIO_ROOT_USER=minio-username"
+            - "MINIO_ROOT_PASSWORD=minio-password"
+
+        command: server /export --console-address ":9001"
+    createbuckets:
+        image: minio/mc
+        links:
+            - "minio"
+        depends_on:
+            - minio
+        entrypoint: >
+            /bin/sh -c "
+            sleep 5;
+            /bin/mc config host add local http://minio:9000 minio-username minio-password;
+            /bin/mc mb --ignore-existing local/musics;
+            /bin/mc anonymous set download local/musics;
+            /bin/mc mb --ignore-existing local/covers;
+            /bin/mc anonymous set download local/covers;
+            exit 0;"

@@ -1,0 +1,75 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String    @id @default(uuid())
+  name     String
+  email    String    @unique
+  password String
+  role     Role
+  comments Comment[]
+}
+
+enum Role {
+  user
+  admin
+  superadmin
+}
+
+model Singer {
+  id          String    @id @default(uuid())
+  name        String
+  bio         String?
+  dateOfBirth DateTime?
+  avatar      String?
+  musics      Music[]
+}
+
+model Album {
+  id          String    @id @default(uuid())
+  title       String
+  musics      Music[]
+  releaseDate DateTime?
+  cover       String
+}
+
+model Music {
+  id          String    @id @default(uuid())
+  name        String
+  description String?
+  duration    Float?
+  releaseDate DateTime?
+  cover       String
+
+  comments Comment[]
+  albums   Album[]
+  singers  Singer[]
+
+  genreId String
+  genre   Genre  @relation(fields: [genreId], references: [id])
+}
+
+model Comment {
+  id         String   @id @default(uuid())
+  text       String
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  music      Music    @relation(fields: [musicId], references: [id], onDelete: Cascade)
+  musicId    String
+  isApproved Boolean  @default(false)
+}
+
+model Genre {
+  id     String  @id @default(uuid())
+  name   String  @unique
+  musics Music[]
+}
+

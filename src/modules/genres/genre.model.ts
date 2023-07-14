@@ -9,5 +9,5 @@ export class Genre {
   name: string;
 
   @Field()
-  movieCount: number;
+  musicCount: number;
 }

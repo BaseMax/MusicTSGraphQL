@@ -1,3 +1,4 @@
+
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch"]
@@ -14,7 +15,7 @@ model User {
   email    String    @unique
   password String
   role     Role
-  comments Comment[]
+  Comment  Comment[]
 }
 
 enum Role {
@@ -23,37 +24,62 @@ enum Role {
   superadmin
 }
 
-model Singer {
-  id          String    @id @default(uuid())
+model Artist {
+  id          String        @id @default(uuid())
   name        String
   bio         String?
   dateOfBirth DateTime?
   avatar      String?
-  musics      Music[]
+  movies      MovieArtist[]
 }
 
-model Album {
-  id          String    @id @default(uuid())
-  title       String
-  musics      Music[]
-  releaseDate DateTime?
-  cover       String
+model Movie {
+  id                 String               @id @default(uuid())
+  name               String
+  plot               String?
+  description        String?
+  imdbScore          Float?
+  imdbRef            String?
+  duration           Float?
+  releaseDate        DateTime?
+  backdrop           String
+  poster             String
+  gallery            String[]
+  genres             Genre[]
+  artists            MovieArtist[]
+  comments           Comment[]
+  downloadableAssets DownloadableAssets[]
+  languages          MovieLanguage[]
 }
 
-model Music {
-  id          String    @id @default(uuid())
-  name        String
-  description String?
-  duration    Float?
-  releaseDate DateTime?
-  cover       String
+model MovieLanguage {
+  tag     String
+  for     LanguageRelation
+  Movie   Movie            @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  movieId String
 
-  comments Comment[]
-  albums   Album[]
-  singers  Singer[]
+  @@id([movieId, for, tag])
+}
 
-  genreId String
-  genre   Genre  @relation(fields: [genreId], references: [id])
+enum LanguageRelation {
+  original
+  dub
+  subtitle
+}
+
+model DownloadableAssets {
+  Movie   Movie     @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  movieId String
+  id      String    @id @default(cuid())
+  link    String
+  title   String
+  type    AssetType
+}
+
+enum AssetType {
+  subtitle
+  sound
+  video
 }
 
 model Comment {
@@ -62,14 +88,29 @@ model Comment {
   createdAt  DateTime @default(now())
   user       User     @relation(fields: [userId], references: [id])
   userId     String
-  music      Music    @relation(fields: [musicId], references: [id], onDelete: Cascade)
-  musicId    String
+  movie      Movie    @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  movieId    String
   isApproved Boolean  @default(false)
 }
 
 model Genre {
   id     String  @id @default(uuid())
   name   String  @unique
-  musics Music[]
+  movies Movie[]
 }
 
+model MovieArtist {
+  movie        Movie        @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  movieId      String
+  artist       Artist       @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  artistId     String
+  contribution Contribution
+
+  @@id([contribution, movieId, artistId])
+}
+
+enum Contribution {
+  actor
+  director
+  writer
+}

@@ -1,29 +1,26 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import { Prisma } from '@prisma/client';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { Service } from 'typedi';
+import { Prisma, PrismaClient } from '@prisma/client';
 import { CreateGenreInput } from './dto/create-genre.input';
 import { UpdateGenreInput } from './dto/update-genre.input';
+import { BadRequestException } from '../../errors/badrequest.exception';
+import { NotFoundException } from '../../errors/notfound.exception';
 
-@Injectable()
+@Service()
 export class GenresService {
-  async countMovies(id: string) {
+  async countMusics(id: string) {
     const data = await this.prisma.genre.findUniqueOrThrow({
       where: { id },
       include: {
         _count: {
           select: {
-            movies: true,
+            musics: true,
           },
         },
       },
     });
-    return data._count.movies;
+    return data._count.musics;
   }
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaClient) { }
 
   public async getById(id: string) {
     return this.prisma.genre.findUnique({

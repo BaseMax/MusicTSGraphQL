@@ -1,5 +1,5 @@
 import { Field, ID, ObjectType } from 'type-graphql';
-import { Movie } from '../movies/movie.model';
+import { Movie } from '../musics/music.model';
 import { User } from '../users/user.model';
 
 @ObjectType()
@@ -21,6 +21,6 @@ export class Comment {
   userId: string;
 
   @Field(() => Movie)
-  movie: Movie;
-  movieId: string;
+  music: Movie;
+  musicId: string;
 }

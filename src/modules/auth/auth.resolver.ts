@@ -1,4 +1,4 @@
-import { Args, Context, Mutation, Query, Resolver } from 'type-graphql';
+import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { Role, User } from '../users/user.model';
 import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
@@ -9,7 +9,10 @@ import { UserAuthPayload } from './dto/user.data';
 import { AuthenticatedDec } from './authenticated-user.decorator';
 import { MinRole } from './min-role.decorator';
 import { Private } from './optional.decorator';
+import { Service } from 'typedi';
 
+
+@Service()
 @Resolver()
 export class AuthResolver {
   constructor(
@@ -19,8 +22,8 @@ export class AuthResolver {
 
   @Mutation(() => AuthPayload)
   async register(
-    @Context() ctx: any,
-    @Args({ name: 'input', type: () => RegisterUserInput })
+    @Ctx() ctx: any,
+    @Arg('input', () => RegisterUserInput)
     input: RegisterUserInput,
   ) {
     const { token, user } = await this.service.register(input);
@@ -30,8 +33,8 @@ export class AuthResolver {
 
   @Mutation(() => AuthPayload)
   async login(
-    @Context() ctx: any,
-    @Args({ name: 'input', type: () => LoginUserInput })
+    @Ctx() ctx: any,
+    @Arg('input',  () => LoginUserInput)
     input: LoginUserInput,
   ) {
     const { token, user } = await this.service.login(input);
@@ -49,8 +52,8 @@ export class AuthResolver {
   @MinRole(Role.superadmin)
   @Mutation(() => User)
   async changeRole(
-    @Args('userId') userId: string,
-    @Args('role', { type: () => Role }) role: Role,
+    @Arg('userId') userId: string,
+    @Arg('role', () => Role) role: Role,
   ) {
     return this.usersService.changeRole(userId, role);
   }

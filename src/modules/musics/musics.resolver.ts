@@ -1,9 +1,9 @@
 import {
-  Args,
+  Arg,
   Mutation,
-  Parent,
+  Root,
   Query,
-  ResolveField,
+  FieldResolver,
   Resolver,
 } from 'type-graphql';
 import { CursorBasedPagination } from 'src/utils/cursor-pagination';
@@ -13,57 +13,58 @@ import { MinRole } from '../auth/min-role.decorator';
 import { Private } from '../auth/optional.decorator';
 import { CommentsService } from '../comments/comments.service';
 import { Role } from '../users/user.model';
-import { CreateMovieInput } from './dto/create-movie.input';
-import { SearchMovieInput } from './dto/search-movie.input';
-import { UpdateMovieInput } from './dto/update-movie.input';
-import { Movie } from './movie.model';
-import { MoviesService } from './movies.service';
-import { PaginatedMovies } from './paginated-movies.model';
+import { CreateMovieInput } from './dto/create-music.input';
+import { SearchMovieInput } from './dto/search-music.input';
+import { UpdateMovieInput } from './dto/update-music.input';
+import { Movie } from './music.model';
+import { MusicsService } from './musics.service';
+import { PaginatedMusics } from './paginated-musics.model';
 
+@Service()
 @Resolver(() => Movie)
-export class MoviesResolver {
+export class MusicsResolver {
   constructor(
-    private service: MoviesService,
+    private service: MusicsService,
     private commentsService: CommentsService,
   ) {}
 
   @Mutation(() => Movie)
   @Private()
   @MinRole(Role.admin)
-  async createMovie(@Args('input') input: CreateMovieInput) {
+  async createMovie(@Arg('input') input: CreateMovieInput) {
     return this.service.create(input);
   }
 
   @Mutation(() => Movie)
   @Private()
   @MinRole(Role.admin)
-  async updateMovie(@Args('input') input: UpdateMovieInput) {
+  async updateMovie(@Arg('input') input: UpdateMovieInput) {
     return this.service.update(input);
   }
 
   @Mutation(() => Boolean)
   @Private()
   @MinRole(Role.admin)
-  async deleteMovie(@Args('id') id: string) {
+  async deleteMovie(@Arg('id') id: string) {
     await this.service.delete(id);
     return true;
   }
 
   @Query(() => Movie, { nullable: true })
-  async movie(@Args('id') id: string) {
+  async music(@Arg('id') id: string) {
     return this.service.getMovieById(id);
   }
-  @Query(() => PaginatedMovies)
-  async searchMovie(@Args('input') input: SearchMovieInput) {
+  @Query(() => PaginatedMusics)
+  async searchMovie(@Arg('input') input: SearchMovieInput) {
     return await this.service.search(input);
   }
 
-  @ResolveField()
+  @FieldResolver()
   comments(
-    @Parent() movie: Movie,
-    @Args('pagination') pagination: CursorBasedPagination,
+    @Root() music: Movie,
+    @Arg('pagination') pagination: CursorBasedPagination,
     @AuthenticatedDec() user?: UserAuthPayload,
   ) {
-    return this.commentsService.getForMovies(movie.id, pagination, user);
+    return this.commentsService.getForMusics(music.id, pagination, user);
   }
 }

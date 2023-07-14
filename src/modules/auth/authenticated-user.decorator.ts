@@ -1,4 +1,4 @@
-import { createParamDecorator } from '@nestjs/common';
+import { createParamDecorator } from 'typedi';
 import { GqlExecutionContext } from 'type-graphql';
 
 export const AuthenticatedDec = createParamDecorator((data: unknown, a) => {

@@ -1,4 +1,4 @@
-import { SetMetadata } from '@nestjs/common';
+import { SetMetadata } from 'typedi';
 import { Role } from '../users/user.model';
 
 export const MIN_ROLE_KEY = 'MIN_ROLE';

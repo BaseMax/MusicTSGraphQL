@@ -1,36 +1,36 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { ArtistsService } from '../artists/artists.service';
+import { Service, NotFoundException } from 'typedi';
+import { PrismaClient } from '@prisma/client';
+import { SingersService } from '../singers/singers.service';
 import { GenresService } from '../genres/genres.service';
 import { UploadService } from '../upload/upload.service';
-import { CreateMovieInput } from './dto/create-movie.input';
-import { SearchMovieInput } from './dto/search-movie.input';
-import { UpdateMovieInput } from './dto/update-movie.input';
+import { CreateMovieInput } from './dto/create-music.input';
+import { SearchMovieInput } from './dto/search-music.input';
+import { UpdateMovieInput } from './dto/update-music.input';
 
 const dbInclude = {
   languages: true,
   genres: true,
   downloadableAssets: true,
-  artists: true,
+  singers: true,
 };
-@Injectable()
-export class MoviesService {
+@Service()
+export class MusicsService {
   async delete(id: string) {
     await this.getMovieByIdOrFail(id);
-    await this.prisma.movie.delete({ where: { id } });
+    await this.prisma.music.delete({ where: { id } });
   }
   async getMovieById(id: string) {
-    return await this.prisma.movie.findUnique({
+    return await this.prisma.music.findUnique({
       where: { id },
       include: dbInclude,
     });
   }
   async getMovieByIdOrFail(id: string) {
-    const movie = await this.getMovieById(id);
-    if (!movie) {
-      throw new NotFoundException(`movie not found. id: '${id}'`);
+    const music = await this.getMovieById(id);
+    if (!music) {
+      throw new NotFoundException(`music not found. id: '${id}'`);
     }
-    return movie;
+    return music;
   }
   async search(input: SearchMovieInput) {
     const query = {
@@ -72,8 +72,8 @@ export class MoviesService {
         : {}),
     };
     return {
-      total: await this.prisma.movie.count({ where: query }),
-      data: await this.prisma.movie.findMany({
+      total: await this.prisma.music.count({ where: query }),
+      data: await this.prisma.music.findMany({
         include: dbInclude,
         where: query,
         skip: input.skip,
@@ -83,13 +83,13 @@ export class MoviesService {
   }
   constructor(
     private upload: UploadService,
-    private prisma: PrismaService,
+    private prisma: PrismaClient,
     private genres: GenresService,
-    private artists: ArtistsService,
+    private singers: SingersService,
   ) {}
   async update(input: UpdateMovieInput) {
     await this.validateInput(input);
-    return await this.prisma.movie.update({
+    return await this.prisma.music.update({
       where: {
         id: input.id,
       },
@@ -97,13 +97,13 @@ export class MoviesService {
         backdrop: input.backdrop,
         name: input.name,
         poster: input.poster,
-        ...(input.artists
+        ...(input.singers
           ? {
-              artists: {
+              singers: {
                 deleteMany: {},
                 createMany: {
                   skipDuplicates: true,
-                  data: input.artists,
+                  data: input.singers,
                 },
               },
             }
@@ -145,14 +145,14 @@ export class MoviesService {
 
   async create(input: CreateMovieInput) {
     await this.validateInput(input);
-    return await this.prisma.movie.create({
+    return await this.prisma.music.create({
       data: {
         backdrop: input.backdrop,
         name: input.name,
         poster: input.poster,
-        artists: {
+        singers: {
           createMany: {
-            data: input.artists,
+            data: input.singers,
           },
         },
         description: input.description,
@@ -191,8 +191,8 @@ export class MoviesService {
     for (const genreId of input.genreIds || []) {
       await this.genres.getByIdOrFail(genreId);
     }
-    for (const artist of input.artists || []) {
-      await this.artists.getByIdOrFail(artist.artistId);
+    for (const singer of input.singers || []) {
+      await this.singers.getByIdOrFail(singer.singerId);
     }
   }
 }

@@ -2,11 +2,10 @@ import {
   ObjectType,
   Field,
   ID,
-  Float,
   Int,
   registerEnumType,
 } from 'type-graphql';
-import { Artist } from '../artists/artist.model';
+import { Singer } from '../singers/singer.model';
 import { Comment } from '../comments/comment.model';
 import { Genre } from '../genres/genre.model';
 
@@ -16,16 +15,7 @@ export class Movie {
   id: string;
 
   @Field({ nullable: true })
-  plot?: string;
-
-  @Field({ nullable: true })
   description?: string;
-
-  @Field(() => Float, { nullable: true })
-  imdbScore?: number;
-
-  @Field({ nullable: true })
-  imdbRef?: string;
 
   @Field(() => Int, { nullable: true })
   duration?: number;
@@ -39,14 +29,11 @@ export class Movie {
   @Field()
   poster: string;
 
-  @Field(() => [String])
-  gallery: string[];
+  @Field(() => Genre)
+  genre: Genre;
 
-  @Field(() => [Genre])
-  genres: Genre[];
-
-  @Field(() => [MovieArtist])
-  artists: MovieArtist[];
+  @Field(() => [MovieSinger])
+  singers: MovieSinger;
 
   @Field(() => [DownloadableAsset])
   downloadableAssets: DownloadableAsset[];
@@ -59,9 +46,9 @@ export class Movie {
 }
 
 @ObjectType()
-export class MovieArtist {
-  @Field(() => Artist)
-  artist: Artist;
+export class MovieSinger {
+  @Field(() => Singer)
+  singer: Singer;
 
   @Field(() => Contribution)
   contribution: Contribution;

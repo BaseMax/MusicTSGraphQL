@@ -1,17 +1,26 @@
-import { ValidationPipe } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
-import { NestExpressApplication } from '@nestjs/platform-express';
-import { raw } from 'express';
-import { AppModule } from './app.module';
+import "reflect-metadata";
+import fastify, {FastifyRegisterOptions} from "fastify";
+import mercurius, {MercuriusOptions} from "mercurius";
+import { buildSchema } from 'type-graphql'
+import { AuthResolver } from "./modules/auth/auth.resolver";
 
-async function bootstrap() {
-  console.log("hello world")
-  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    rawBody: true,
+
+async function main() {
+  // build TypeGraphQL executable schema
+  const schema = await buildSchema({
+    resolvers: [AuthResolver],
   });
-  app.useGlobalPipes(new ValidationPipe());
-  app.use(raw({ limit: '3mb' }));
 
-  await app.listen(3000);
+  const app = fastify();
+
+  const opts: FastifyRegisterOptions<MercuriusOptions> = {
+    schema,
+    graphiql: true
+  }
+  app.register(mercurius, opts);
+  console.log("starting");
+
+  app.listen({ port: 3000 });
 }
-bootstrap();
+
+main().catch(console.error);

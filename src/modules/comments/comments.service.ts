@@ -1,19 +1,19 @@
 import {
   ForbiddenException,
-  Injectable,
+  Service,
   NotFoundException,
-} from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+} from 'typedi';
+import { PrismaClient } from '@prisma/client';
 import { CursorBasedPagination } from 'src/utils/cursor-pagination';
 import { UserAuthPayload } from '../auth/dto/user.data';
-import { MoviesService } from '../movies/movies.service';
+import { MusicsService } from '../musics/musics.service';
 import { CreateCommentInput } from './dto/create-comment.input';
 import { UpdateCommentInput } from './dto/update-comment.input';
 
-@Injectable()
+@Service()
 export class CommentsService {
-  getForMovies(
-    movieId: string,
+  getForMusics(
+    musicId: string,
     pagination: CursorBasedPagination,
     user: UserAuthPayload | undefined,
   ) {
@@ -28,7 +28,7 @@ export class CommentsService {
         : {}),
       skip: pagination.cursor ? 1 : 0,
       where: {
-        movieId,
+        musicId,
         OR: [
           {
             isApproved: true,
@@ -103,13 +103,13 @@ export class CommentsService {
     }
     return comment;
   }
-  constructor(private prisma: PrismaService, private movies: MoviesService) {}
+  constructor(private prisma: PrismaClient, private musics: MusicsService) {}
   async create(auth: UserAuthPayload, input: CreateCommentInput) {
-    await this.movies.getMovieByIdOrFail(input.movieId);
+    await this.musics.getMovieByIdOrFail(input.musicId);
     return await this.prisma.comment.create({
       data: {
         text: input.text,
-        movieId: input.movieId,
+        musicId: input.musicId,
         userId: auth.id,
       },
     });

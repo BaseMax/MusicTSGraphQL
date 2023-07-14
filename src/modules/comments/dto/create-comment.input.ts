@@ -6,5 +6,5 @@ export class CreateCommentInput {
   text: string;
 
   @Field()
-  movieId: string;
+  musicId: string;
 }

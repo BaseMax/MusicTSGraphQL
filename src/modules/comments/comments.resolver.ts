@@ -1,9 +1,9 @@
 import {
-  Args,
+  Arg,
   Mutation,
-  Parent,
+  Root,
   Query,
-  ResolveField,
+  FieldResolver,
   Resolver,
 } from 'type-graphql';
 import { CursorBasedPagination } from 'src/utils/cursor-pagination';
@@ -11,7 +11,7 @@ import { AuthenticatedDec } from '../auth/authenticated-user.decorator';
 import { UserAuthPayload } from '../auth/dto/user.data';
 import { MinRole } from '../auth/min-role.decorator';
 import { Private } from '../auth/optional.decorator';
-import { MoviesService } from '../movies/movies.service';
+import { MusicsService } from '../musics/musics.service';
 import { Role } from '../users/user.model';
 import { UsersService } from '../users/users.service';
 import { Comment } from './comment.model';
@@ -19,11 +19,12 @@ import { CommentsService } from './comments.service';
 import { CreateCommentInput } from './dto/create-comment.input';
 import { UpdateCommentInput } from './dto/update-comment.input';
 
+@Service()
 @Resolver(() => Comment)
 export class CommentsResolver {
   constructor(
     private service: CommentsService,
-    private movies: MoviesService,
+    private musics: MusicsService,
     private users: UsersService,
   ) {}
 
@@ -31,7 +32,7 @@ export class CommentsResolver {
   @Private()
   createComment(
     @AuthenticatedDec() user: UserAuthPayload,
-    @Args('input') input: CreateCommentInput,
+    @Arg('input') input: CreateCommentInput,
   ) {
     return this.service.create(user, input);
   }
@@ -40,7 +41,7 @@ export class CommentsResolver {
   @Private()
   updateComment(
     @AuthenticatedDec() user: UserAuthPayload,
-    @Args('input') input: UpdateCommentInput,
+    @Arg('input') input: UpdateCommentInput,
   ) {
     return this.service.update(user, input);
   }
@@ -49,7 +50,7 @@ export class CommentsResolver {
   @Private()
   async deleteComment(
     @AuthenticatedDec() user: UserAuthPayload,
-    @Args('id') id: string,
+    @Arg('id') id: string,
   ) {
     await this.service.delete(user, id);
     return true;
@@ -58,23 +59,23 @@ export class CommentsResolver {
   @Mutation(() => Comment)
   @Private()
   @MinRole(Role.admin)
-  approveComment(@Args('id') id: string) {
+  approveComment(@Arg('id') id: string) {
     return this.service.approve(id);
   }
 
   @Query(() => [Comment])
   @Private()
   @MinRole(Role.admin)
-  unapprovedComments(@Args('pagination') pagination: CursorBasedPagination) {
+  unapprovedComments(@Arg('pagination') pagination: CursorBasedPagination) {
     return this.service.unapproved(pagination);
   }
-  @ResolveField()
-  movie(@Parent() comment: Comment) {
-    return this.movies.getMovieByIdOrFail(comment.movieId);
+  @FieldResolver()
+  music(@Root() comment: Comment) {
+    return this.musics.getMovieByIdOrFail(comment.musicId);
   }
 
-  @ResolveField()
-  user(@Parent() comment: Comment) {
+  @FieldResolver()
+  user(@Root() comment: Comment) {
     return this.users.getUserByIdOrFail(comment.userId);
   }
 }

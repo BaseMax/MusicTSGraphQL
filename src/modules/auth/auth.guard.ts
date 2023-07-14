@@ -2,15 +2,15 @@ import {
   CanActivate,
   ExecutionContext,
   ForbiddenException,
-  Injectable,
+  Service,
   UnauthorizedException,
-} from '@nestjs/common';
+} from 'typedi';
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from 'type-graphql';
 import { JwtService } from '@nestjs/jwt';
 import { Role } from '../users/user.model';
 
-@Injectable()
+@Service()
 export class AuthGuard implements CanActivate {
   constructor(private jwtService: JwtService, private reflector: Reflector) {}
 

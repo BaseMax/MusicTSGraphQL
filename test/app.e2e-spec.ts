@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
-import { INestApplication, ValidationPipe } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from 'inversify';
 import { AppModule } from '../src/app.module';
 import { PrismaClient, User } from '@prisma/client';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaClient } from 'src/prisma/prisma.service';
 import { hash } from 'argon2';
 import { Role } from 'src/modules/users/user.model';
 
@@ -21,7 +21,7 @@ describe('AppController (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
     app.useGlobalPipes(new ValidationPipe());
-    prisma = app.get(PrismaService);
+    prisma = app.get(PrismaClient);
 
     await app.init();
   });

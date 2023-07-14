@@ -1,9 +1,9 @@
 import {
   BadRequestException,
-  Injectable,
+  Service,
   NotFoundException,
-} from '@nestjs/common';
-import { InjectS3, S3 } from 'nestjs-s3';
+} from 'typedi';
+import { injectS3, S3 } from 'nestjs-s3';
 import { NotFound } from '@aws-sdk/client-s3';
 import * as sharp from 'sharp';
 import * as cuid from 'cuid';
@@ -20,9 +20,9 @@ interface SizedUploadInput extends UploadInput {
   height: number;
 }
 
-@Injectable()
+@Service()
 export class UploadService {
-  constructor(@InjectS3() private readonly s3: S3) {}
+  constructor(@injectS3() private readonly s3: S3) {}
   async uploadAvatar(input: UploadInput) {
     return await this.uploadImageSized({
       ...input,

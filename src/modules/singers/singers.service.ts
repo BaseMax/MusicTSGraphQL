@@ -1,31 +1,32 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { movieInclude } from '../movies/movieInclude';
+import { PrismaClient } from '@prisma/client';
+import { Service } from 'typedi';
+import { NotFoundException } from '../../errors/notfound.exception';
+import { musicInclude } from '../musics/musicInclude';
 import { UploadService } from '../upload/upload.service';
-import { CreateArtistInput } from './dto/create-artist.input';
-import { SearchArtistInput } from './dto/search-artist.input';
-import { UpdateArtistInput } from './dto/update-artist.input';
+import { CreateSingerInput } from './dto/create-singer.input';
+import { SearchSingerInput } from './dto/search-singer.input';
+import { UpdateSingerInput } from './dto/update-singer.input';
 
-@Injectable()
-export class ArtistsService {
-  async getMovies(id: string) {
-    const movies = await this.prisma.artist.findUniqueOrThrow({
+@Service()
+export class SingersService {
+  async getMusics(id: string) {
+    const musics = await this.prisma.singer.findUniqueOrThrow({
       where: {
         id,
       },
       include: {
-        movies: {
+        musics: {
           include: {
-            movie: {
-              include: movieInclude,
+            musics: {
+              include: musicInclude,
             },
           },
         },
       },
     });
-    return movies.movies.map((m) => m.movie);
+    return musics.musics.map((m) => m.music);
   }
-  async search(input: SearchArtistInput) {
+  async search(input: SearchSingerInput) {
     const query = input.text
       ? {
           OR: [
@@ -39,10 +40,10 @@ export class ArtistsService {
         }
       : {};
     return {
-      total: await this.prisma.artist.count({
+      total: await this.prisma.singer.count({
         where: query,
       }),
-      artists: await this.prisma.artist.findMany({
+      singers: await this.prisma.singer.findMany({
         where: query,
         skip: input.skip,
         take: input.limit,
@@ -51,34 +52,34 @@ export class ArtistsService {
   }
   async delete(id: string) {
     await this.getByIdOrFail(id);
-    await this.prisma.artist.delete({
+    await this.prisma.singer.delete({
       where: { id },
     });
     return true;
   }
 
-  constructor(private prisma: PrismaService, private upload: UploadService) {}
+  constructor(private prisma: PrismaClient, private upload: UploadService) {}
 
   async getById(id: string) {
-    return await this.prisma.artist.findUnique({
+    return await this.prisma.singer.findUnique({
       where: { id },
     });
   }
 
   async getByIdOrFail(id: string) {
-    const artist = await this.getById(id);
-    if (!artist) {
-      throw new NotFoundException(`artist not found. id: '${id}'`);
+    const singer = await this.getById(id);
+    if (!singer) {
+      throw new NotFoundException(`singer not found. id: '${id}'`);
     }
-    return artist;
+    return singer;
   }
 
-  async update(input: UpdateArtistInput) {
+  async update(input: UpdateSingerInput) {
     await this.getByIdOrFail(input.id);
     if (input.avatar) {
       await this.upload.checkWithBucketOrFail(input.avatar, 'avatars');
     }
-    return this.prisma.artist.update({
+    return this.prisma.singer.update({
       where: { id: input.id },
       data: {
         avatar: input.avatar,
@@ -89,11 +90,11 @@ export class ArtistsService {
     });
   }
 
-  async create(input: CreateArtistInput) {
+  async create(input: CreateSingerInput) {
     if (input.avatar) {
       await this.upload.checkWithBucketOrFail(input.avatar, 'avatars');
     }
-    return this.prisma.artist.create({
+    return this.prisma.singer.create({
       data: {
         avatar: input.avatar,
         name: input.name,

@@ -1,18 +1,19 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Service } from 'typedi';
 import { User } from '@prisma/client';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaClient } from '@prisma/client';
 import { Role } from './user.model';
+import { NotFoundException } from '../../errors/notfound.exception';
 
-@Injectable()
+@Service()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaClient) {}
   getUserById(id: string): Promise<User | null> {
     return this.prisma.user.findUnique({ where: { id } });
   }
   async getUserByIdOrFail(id: string): Promise<User> {
     const user = await this.getUserById(id);
     if (!user) {
-      throw new NotFoundException('user not found');
+      throw new NotFoundException('user');
     }
     return user;
   }

@@ -4,5 +4,5 @@ import { CursorBasedPagination } from 'src/utils/cursor-pagination';
 @InputType()
 export class MovieCommentsInput extends CursorBasedPagination {
   @Field()
-  movieId: string;
+  musicId: string;
 }

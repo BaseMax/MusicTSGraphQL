@@ -1,5 +1,5 @@
 import { InputType, Field, Float, Int } from 'type-graphql';
-import { AssetType, Contribution, LanguageRelation } from '../movie.model';
+import { AssetType, Contribution, LanguageRelation } from '../music.model';
 import {
   IsIn,
   IsNotEmpty,
@@ -15,7 +15,6 @@ import { Type } from 'class-transformer';
 
 @InputType()
 export class CreateMovieInput {
-  @IsNotEmpty()
   @IsString()
   @MaxLength(100)
   @Field()
@@ -68,9 +67,9 @@ export class CreateMovieInput {
   genreIds: string[];
 
   @ValidateNested({ each: true })
-  @Type(() => CreateMovieArtistInput)
-  @Field(() => [CreateMovieArtistInput])
-  artists: CreateMovieArtistInput[];
+  @Type(() => CreateMovieSingerInput)
+  @Field(() => [CreateMovieSingerInput])
+  singers: CreateMovieSingerInput[];
 
   @ValidateNested({ each: true })
   @Type(() => CreateDownloadableAssetInput)
@@ -84,10 +83,10 @@ export class CreateMovieInput {
 }
 
 @InputType()
-export class CreateMovieArtistInput {
+export class CreateMovieSingerInput {
   @IsNotEmpty()
   @Field()
-  artistId: string;
+  singerId: string;
 
   @IsNotEmpty()
   @Field(() => Contribution)

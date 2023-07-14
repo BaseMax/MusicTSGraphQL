@@ -3,7 +3,7 @@ import { CreateCommentInput } from './create-comment.input';
 
 @InputType()
 export class UpdateCommentInput extends OmitType(CreateCommentInput, [
-  'movieId',
+  'musicId',
 ]) {
   @Field()
   id: string;

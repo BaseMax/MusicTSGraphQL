@@ -1,5 +1,5 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { BadRequestException, Service } from 'typedi';
+import { PrismaClient } from '@prisma/client';
 import { UsersService } from '../users/users.service';
 import { RegisterUserInput } from './dto/register.input';
 import * as argon2 from 'argon2';
@@ -7,11 +7,11 @@ import { Role, User } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
 import { LoginUserInput } from './dto/login.input';
 
-@Injectable()
+@Service()
 export class AuthService {
   constructor(
     private usersService: UsersService,
-    private prisma: PrismaService,
+    private prisma: PrismaClient,
     private jwt: JwtService,
   ) {}
   async register(input: RegisterUserInput) {

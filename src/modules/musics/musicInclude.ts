@@ -1,6 +1,6 @@
-export const movieInclude = {
+export const musicInclude = {
   languages: true,
   genres: true,
   downloadableAssets: true,
-  artists: true,
+  singers: true,
 };

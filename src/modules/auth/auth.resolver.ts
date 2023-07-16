@@ -9,7 +9,7 @@ import { RegisterUserInput } from "./dto/register.input";
 // import { AuthenticatedDec } from './authenticated-user.decorator';
 import { injectable } from "tsyringe";
 import { UserAuthPayload } from "./dto/user.data";
-import { CurrentUser } from "./dto/current-user.decorator";
+import { CurrentUser } from "./current-user.decorator";
 
 @injectable()
 @Resolver()
@@ -45,13 +45,13 @@ export class AuthResolver {
   async user(@CurrentUser() user: UserAuthPayload) {
     return this.usersService.getUserById(user.id);
   }
-  //
-  // @Authorized([Role.superadmin])
-  // @Mutation(() => User)
-  // async changeRole(
-  //   @Arg('userId') userId: string,
-  //   @Arg('role', () => Role) role: Role,
-  // ) {
-  //   return this.usersService.changeRole(userId, role);
-  // }
+
+  @Authorized([Role.superadmin])
+  @Mutation(() => User)
+  async changeRole(
+    @Arg('userId') userId: string,
+    @Arg('role', () => Role) role: Role,
+  ) {
+    return this.usersService.changeRole(userId, role);
+  }
 }

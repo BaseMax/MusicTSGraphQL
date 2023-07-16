@@ -1,4 +1,4 @@
-import { Module } from 'typedi';
+import { Module } from 'tsyringe';
 import { UploadService } from './upload.service';
 import { UploadController } from './upload.controller';
 import { S3Module } from 'nestjs-s3';

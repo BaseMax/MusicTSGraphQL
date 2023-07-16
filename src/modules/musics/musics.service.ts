@@ -1,5 +1,5 @@
-import { Service, NotFoundException } from 'typedi';
-import { PrismaClient } from '@prisma/client';
+import { Service, NotFoundException } from 'tsyringe';
+import { PrismaService } from '../../utils/prisma.service';
 import { SingersService } from '../singers/singers.service';
 import { GenresService } from '../genres/genres.service';
 import { UploadService } from '../upload/upload.service';
@@ -13,7 +13,7 @@ const dbInclude = {
   downloadableAssets: true,
   singers: true,
 };
-@Service()
+injectable()
 export class MusicsService {
   async delete(id: string) {
     await this.getMovieByIdOrFail(id);
@@ -83,7 +83,7 @@ export class MusicsService {
   }
   constructor(
     private upload: UploadService,
-    private prisma: PrismaClient,
+    private prisma: PrismaService,
     private genres: GenresService,
     private singers: SingersService,
   ) {}

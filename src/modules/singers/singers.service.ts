@@ -1,5 +1,5 @@
-import { PrismaClient } from '@prisma/client';
-import { Service } from 'typedi';
+import { PrismaService } from '../../utils/prisma.service';
+import { Service } from 'tsyringe';
 import { NotFoundException } from '../../errors/notfound.exception';
 import { musicInclude } from '../musics/musicInclude';
 import { UploadService } from '../upload/upload.service';
@@ -7,7 +7,7 @@ import { CreateSingerInput } from './dto/create-singer.input';
 import { SearchSingerInput } from './dto/search-singer.input';
 import { UpdateSingerInput } from './dto/update-singer.input';
 
-@Service()
+injectable()
 export class SingersService {
   async getMusics(id: string) {
     const musics = await this.prisma.singer.findUniqueOrThrow({
@@ -58,7 +58,7 @@ export class SingersService {
     return true;
   }
 
-  constructor(private prisma: PrismaClient, private upload: UploadService) {}
+  constructor(private prisma: PrismaService, private upload: UploadService) {}
 
   async getById(id: string) {
     return await this.prisma.singer.findUnique({

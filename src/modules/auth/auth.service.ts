@@ -1,19 +1,20 @@
-import { BadRequestException, Service } from 'typedi';
-import { PrismaClient } from '@prisma/client';
+import { inject, injectable } from 'tsyringe';
+import { PrismaService } from '../../utils/prisma.service';
 import { UsersService } from '../users/users.service';
 import { RegisterUserInput } from './dto/register.input';
 import * as argon2 from 'argon2';
 import { Role, User } from '@prisma/client';
-import { JwtService } from '@nestjs/jwt';
 import { LoginUserInput } from './dto/login.input';
+import { BadRequestException } from '../../errors/badrequest.exception';
+import { JwtService } from './jwt.service';
 
-@Service()
+@injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
-    private prisma: PrismaClient,
     private jwt: JwtService,
-  ) {}
+    private prisma: PrismaService,
+  ) { }
   async register(input: RegisterUserInput) {
     const userExists = await this.usersService.getUserByEmail(input.email);
     if (userExists) {

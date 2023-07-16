@@ -1,6 +1,6 @@
-@Module({
-  imports: [PrismaModule],
-  providers: [UsersService],
-  exports: [UsersService],
-})
-export class UsersModule {}
+// @Module({
+//   imports: [PrismaModule],
+//   providers: [UsersService],
+//   exports: [UsersService],
+// })
+// export class UsersModule {}

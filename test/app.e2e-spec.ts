@@ -337,7 +337,6 @@ describe('AppController (e2e)', () => {
         `,
         });
 
-      console.log(registerResponse);
       // Assert
       expect(registerResponse.status).toBe(200);
       expect(registerResponse.body.data).not.toBeNull();

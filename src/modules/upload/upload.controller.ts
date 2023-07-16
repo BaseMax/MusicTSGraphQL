@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post } from 'typedi';
+import { Body, Controller, Param, Post } from 'tsyringe';
 import { MinRole } from '../auth/min-role.decorator';
 import { Private } from '../auth/optional.decorator';
 import { Role } from '../users/user.model';

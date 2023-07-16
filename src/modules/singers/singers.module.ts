@@ -1,4 +1,4 @@
-import { Module } from 'typedi';
+import { Module } from 'tsyringe';
 import { SingersService } from './singers.service';
 import { SingersResolver } from './singers.resolver';
 import { UploadModule } from '../upload/upload.module';

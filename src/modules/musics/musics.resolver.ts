@@ -20,7 +20,7 @@ import { Movie } from './music.model';
 import { MusicsService } from './musics.service';
 import { PaginatedMusics } from './paginated-musics.model';
 
-@Service()
+injectable()
 @Resolver(() => Movie)
 export class MusicsResolver {
   constructor(

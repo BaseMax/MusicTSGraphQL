@@ -19,7 +19,7 @@ import { CommentsService } from './comments.service';
 import { CreateCommentInput } from './dto/create-comment.input';
 import { UpdateCommentInput } from './dto/update-comment.input';
 
-@Service()
+injectable()
 @Resolver(() => Comment)
 export class CommentsResolver {
   constructor(

@@ -4,13 +4,13 @@ import {
   ForbiddenException,
   Service,
   UnauthorizedException,
-} from 'typedi';
+} from 'tsyringe';
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from 'type-graphql';
 import { JwtService } from '@nestjs/jwt';
 import { Role } from '../users/user.model';
 
-@Service()
+injectable()
 export class AuthGuard implements CanActivate {
   constructor(private jwtService: JwtService, private reflector: Reflector) {}
 

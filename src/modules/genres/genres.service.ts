@@ -1,11 +1,11 @@
-import { Service } from 'typedi';
-import { Prisma, PrismaClient } from '@prisma/client';
+import { Service } from 'tsyringe';
+import { Prisma, PrismaService } from '../../utils/prisma.service';
 import { CreateGenreInput } from './dto/create-genre.input';
 import { UpdateGenreInput } from './dto/update-genre.input';
 import { BadRequestException } from '../../errors/badrequest.exception';
 import { NotFoundException } from '../../errors/notfound.exception';
 
-@Service()
+injectable()
 export class GenresService {
   async countMusics(id: string) {
     const data = await this.prisma.genre.findUniqueOrThrow({
@@ -20,7 +20,7 @@ export class GenresService {
     });
     return data._count.musics;
   }
-  constructor(private prisma: PrismaClient) { }
+  constructor(private prisma: PrismaService) { }
 
   public async getById(id: string) {
     return this.prisma.genre.findUnique({
@@ -46,7 +46,7 @@ export class GenresService {
         },
       });
     } catch (e) {
-      if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      if (e instanceof Prisma.PrismaServiceKnownRequestError) {
         if (e.code === 'P2002') {
           throw new BadRequestException('name conflicting');
         }

@@ -1,4 +1,4 @@
-import { forwardRef, Module } from 'typedi';
+import { forwardRef, Module } from 'tsyringe';
 import { CommentsService } from './comments.service';
 import { CommentsResolver } from './comments.resolver';
 import { PrismaModule } from 'src/prisma/prisma.module';

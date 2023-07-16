@@ -14,7 +14,7 @@ import { UpdateGenreInput } from './dto/update-genre.input';
 import { Genre } from './genre.model';
 import { GenresService } from './genres.service';
 
-@Service()
+injectable()
 @Resolver(() => Genre)
 export class GenresResolver {
   constructor(private service: GenresService) {}

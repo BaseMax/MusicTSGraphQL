@@ -2,7 +2,7 @@ import {
   BadRequestException,
   Service,
   NotFoundException,
-} from 'typedi';
+} from 'tsyringe';
 import { injectS3, S3 } from 'nestjs-s3';
 import { NotFound } from '@aws-sdk/client-s3';
 import * as sharp from 'sharp';
@@ -20,7 +20,7 @@ interface SizedUploadInput extends UploadInput {
   height: number;
 }
 
-@Service()
+injectable()
 export class UploadService {
   constructor(@injectS3() private readonly s3: S3) {}
   async uploadAvatar(input: UploadInput) {
@@ -90,7 +90,6 @@ export class UploadService {
 
     let exists = true;
     try {
-      console.log(bucket, name);
       await this.s3.headObject({
         Bucket: bucket,
         Key: name,

@@ -2,7 +2,7 @@ import { Root, FieldResolver, Resolver } from 'type-graphql';
 import { SingersService } from 'src/modules/singers/singers.service';
 import { MovieSinger } from '../music.model';
 
-@Service()
+injectable()
 @Resolver(() => MovieSinger)
 export class MovieSingerResolver {
   constructor(private singers: SingersService) {}

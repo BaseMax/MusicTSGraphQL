@@ -2,15 +2,15 @@ import {
   ForbiddenException,
   Service,
   NotFoundException,
-} from 'typedi';
-import { PrismaClient } from '@prisma/client';
+} from 'tsyringe';
+import { PrismaService } from '../../utils/prisma.service';
 import { CursorBasedPagination } from 'src/utils/cursor-pagination';
 import { UserAuthPayload } from '../auth/dto/user.data';
 import { MusicsService } from '../musics/musics.service';
 import { CreateCommentInput } from './dto/create-comment.input';
 import { UpdateCommentInput } from './dto/update-comment.input';
 
-@Service()
+injectable()
 export class CommentsService {
   getForMusics(
     musicId: string,
@@ -103,7 +103,7 @@ export class CommentsService {
     }
     return comment;
   }
-  constructor(private prisma: PrismaClient, private musics: MusicsService) {}
+  constructor(private prisma: PrismaService, private musics: MusicsService) {}
   async create(auth: UserAuthPayload, input: CreateCommentInput) {
     await this.musics.getMovieByIdOrFail(input.musicId);
     return await this.prisma.comment.create({

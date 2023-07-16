@@ -16,7 +16,7 @@ import { PaginatedSinger as PaginatedSingers } from './dto/paginated-singer.mode
 import { SearchSingerInput } from './dto/search-singer.input';
 import { UpdateSingerInput } from './dto/update-singer.input';
 
-@Service()
+injectable()
 @Resolver(() => Singer)
 export class SingersResolver {
   constructor(private service: SingersService) {}

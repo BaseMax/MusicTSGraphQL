@@ -1,4 +1,4 @@
-import { forwardRef, Module } from 'typedi';
+import { forwardRef, Module } from 'tsyringe';
 import { MusicsService } from './musics.service';
 import { MusicsResolver } from './musics.resolver';
 import { UploadModule } from '../upload/upload.module';

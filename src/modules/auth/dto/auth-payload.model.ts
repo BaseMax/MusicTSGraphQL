@@ -1,5 +1,5 @@
 import { Field, ObjectType } from 'type-graphql';
-import { User } from 'src/modules/users/user.model';
+import { User } from '../../users/user.model';
 
 @ObjectType()
 export class AuthPayload {

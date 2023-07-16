@@ -1,4 +1,4 @@
-import { Role } from 'src/modules/users/user.model';
+import { Role } from '../../users/user.model';
 
 export interface UserAuthPayload {
   id: string;

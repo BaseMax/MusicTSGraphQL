@@ -1,6 +1,6 @@
 import { createInterface } from "readline/promises"
 
-import { ValidationPipe } from 'typedi';
+import { ValidationPipe } from 'tsyringe';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { UsersService } from './modules/users/users.service';

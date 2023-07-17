@@ -1,5 +1,5 @@
 import { Field, InputType } from 'type-graphql';
-import { Pagination } from 'src/utils/pagination.input';
+import { Pagination } from '../../../utils/pagination.input';
 
 @InputType()
 export class SearchSingerInput extends Pagination {

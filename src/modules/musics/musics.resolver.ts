@@ -1,3 +1,4 @@
+import { injectable } from 'tsyringe';
 import {
   Arg,
   Mutation,
@@ -6,36 +7,32 @@ import {
   FieldResolver,
   Resolver,
 } from 'type-graphql';
-import { CursorBasedPagination } from 'src/utils/cursor-pagination';
-import { AuthenticatedDec } from '../auth/authenticated-user.decorator';
 import { UserAuthPayload } from '../auth/dto/user.data';
-import { MinRole } from '../auth/min-role.decorator';
-import { Private } from '../auth/optional.decorator';
 import { CommentsService } from '../comments/comments.service';
 import { Role } from '../users/user.model';
 import { CreateMovieInput } from './dto/create-music.input';
 import { SearchMovieInput } from './dto/search-music.input';
 import { UpdateMovieInput } from './dto/update-music.input';
-import { Movie } from './music.model';
+import { Music } from './music.model';
 import { MusicsService } from './musics.service';
 import { PaginatedMusics } from './paginated-musics.model';
 
-injectable()
-@Resolver(() => Movie)
+@injectable()
+@Resolver(() => Music)
 export class MusicsResolver {
   constructor(
     private service: MusicsService,
     private commentsService: CommentsService,
   ) {}
 
-  @Mutation(() => Movie)
+  @Mutation(() => Music)
   @Private()
   @MinRole(Role.admin)
   async createMovie(@Arg('input') input: CreateMovieInput) {
     return this.service.create(input);
   }
 
-  @Mutation(() => Movie)
+  @Mutation(() => Music)
   @Private()
   @MinRole(Role.admin)
   async updateMovie(@Arg('input') input: UpdateMovieInput) {
@@ -50,7 +47,7 @@ export class MusicsResolver {
     return true;
   }
 
-  @Query(() => Movie, { nullable: true })
+  @Query(() => Music, { nullable: true })
   async music(@Arg('id') id: string) {
     return this.service.getMovieById(id);
   }
@@ -61,7 +58,7 @@ export class MusicsResolver {
 
   @FieldResolver()
   comments(
-    @Root() music: Movie,
+    @Root() music: Music,
     @Arg('pagination') pagination: CursorBasedPagination,
     @AuthenticatedDec() user?: UserAuthPayload,
   ) {

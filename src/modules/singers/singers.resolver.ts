@@ -5,9 +5,8 @@ import {
   Query,
   FieldResolver,
   Resolver,
+  Authorized,
 } from 'type-graphql';
-import { MinRole } from '../auth/min-role.decorator';
-import { Private } from '../auth/optional.decorator';
 import { Role } from '../users/user.model';
 import { Singer } from './singer.model';
 import { SingersService } from './singers.service';
@@ -15,29 +14,27 @@ import { CreateSingerInput } from './dto/create-singer.input';
 import { PaginatedSinger as PaginatedSingers } from './dto/paginated-singer.model';
 import { SearchSingerInput } from './dto/search-singer.input';
 import { UpdateSingerInput } from './dto/update-singer.input';
+import { injectable } from 'tsyringe';
 
-injectable()
+@injectable()
 @Resolver(() => Singer)
 export class SingersResolver {
   constructor(private service: SingersService) {}
 
   @Mutation(() => Boolean)
-  @Private()
-  @MinRole(Role.admin)
+  @Authorized([Role.admin,Role.superadmin])
   deleteSinger(@Arg('id') id: string) {
     return this.service.delete(id);
   }
 
   @Mutation(() => Singer)
-  @Private()
-  @MinRole(Role.admin)
+  @Authorized([Role.admin,Role.superadmin])
   createSinger(@Arg('input') input: CreateSingerInput) {
     return this.service.create(input);
   }
 
   @Mutation(() => Singer)
-  @Private()
-  @MinRole(Role.admin)
+  @Authorized([Role.admin,Role.superadmin])
   updateSinger(@Arg('input') input: UpdateSingerInput) {
     return this.service.update(input);
   }

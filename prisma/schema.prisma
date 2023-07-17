@@ -1,4 +1,3 @@
-
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch"]
@@ -15,7 +14,7 @@ model User {
   email    String    @unique
   password String
   role     Role
-  Comment  Comment[]
+  comments Comment[]
 }
 
 enum Role {
@@ -24,62 +23,38 @@ enum Role {
   superadmin
 }
 
-model Artist {
-  id          String        @id @default(uuid())
+model Singer {
+  id          String    @id @default(uuid())
   name        String
   bio         String?
   dateOfBirth DateTime?
   avatar      String?
-  movies      MovieArtist[]
+  musics      Music[]
 }
 
-model Movie {
-  id                 String               @id @default(uuid())
-  name               String
-  plot               String?
-  description        String?
-  imdbScore          Float?
-  imdbRef            String?
-  duration           Float?
-  releaseDate        DateTime?
-  backdrop           String
-  poster             String
-  gallery            String[]
-  genres             Genre[]
-  artists            MovieArtist[]
-  comments           Comment[]
-  downloadableAssets DownloadableAssets[]
-  languages          MovieLanguage[]
+model Album {
+  id          String    @id @default(uuid())
+  title       String
+  musics      Music[]
+  releaseDate DateTime?
+  cover       String
 }
 
-model MovieLanguage {
-  tag     String
-  for     LanguageRelation
-  Movie   Movie            @relation(fields: [movieId], references: [id], onDelete: Cascade)
-  movieId String
+model Music {
+  id          String    @id @default(uuid())
+  name        String
+  description String?
+  duration    Float?
+  releaseDate DateTime?
+  cover       String
+  link        String
 
-  @@id([movieId, for, tag])
-}
+  comments Comment[]
+  albums   Album[]
+  singers  Singer[]
 
-enum LanguageRelation {
-  original
-  dub
-  subtitle
-}
-
-model DownloadableAssets {
-  Movie   Movie     @relation(fields: [movieId], references: [id], onDelete: Cascade)
-  movieId String
-  id      String    @id @default(cuid())
-  link    String
-  title   String
-  type    AssetType
-}
-
-enum AssetType {
-  subtitle
-  sound
-  video
+  genreId String
+  genre   Genre  @relation(fields: [genreId], references: [id])
 }
 
 model Comment {
@@ -88,29 +63,13 @@ model Comment {
   createdAt  DateTime @default(now())
   user       User     @relation(fields: [userId], references: [id])
   userId     String
-  movie      Movie    @relation(fields: [movieId], references: [id], onDelete: Cascade)
-  movieId    String
+  music      Music    @relation(fields: [musicId], references: [id], onDelete: Cascade)
+  musicId    String
   isApproved Boolean  @default(false)
 }
 
 model Genre {
   id     String  @id @default(uuid())
   name   String  @unique
-  movies Movie[]
-}
-
-model MovieArtist {
-  movie        Movie        @relation(fields: [movieId], references: [id], onDelete: Cascade)
-  movieId      String
-  artist       Artist       @relation(fields: [artistId], references: [id], onDelete: Cascade)
-  artistId     String
-  contribution Contribution
-
-  @@id([contribution, movieId, artistId])
-}
-
-enum Contribution {
-  actor
-  director
-  writer
+  musics Music[]
 }

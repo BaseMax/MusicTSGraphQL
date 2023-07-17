@@ -1,13 +1,12 @@
-import { PrismaService } from '../../utils/prisma.service';
-import { Service } from 'tsyringe';
-import { NotFoundException } from '../../errors/notfound.exception';
-import { musicInclude } from '../musics/musicInclude';
-import { UploadService } from '../upload/upload.service';
-import { CreateSingerInput } from './dto/create-singer.input';
-import { SearchSingerInput } from './dto/search-singer.input';
-import { UpdateSingerInput } from './dto/update-singer.input';
+import { PrismaService } from "../../utils/prisma.service";
+import { NotFoundException } from "../../errors/notfound.exception";
+import { UploadService } from "../upload/upload.service";
+import { CreateSingerInput } from "./dto/create-singer.input";
+import { SearchSingerInput } from "./dto/search-singer.input";
+import { UpdateSingerInput } from "./dto/update-singer.input";
+import { injectable } from "tsyringe";
 
-injectable()
+@injectable()
 export class SingersService {
   async getMusics(id: string) {
     const musics = await this.prisma.singer.findUniqueOrThrow({
@@ -16,28 +15,24 @@ export class SingersService {
       },
       include: {
         musics: {
-          include: {
-            musics: {
-              include: musicInclude,
-            },
-          },
+          include: {},
         },
       },
     });
-    return musics.musics.map((m) => m.music);
+    return musics.musics.map((m) => m);
   }
   async search(input: SearchSingerInput) {
     const query = input.text
       ? {
-          OR: [
-            {
-              name: { search: input.text },
-            },
-            {
-              bio: { search: input.text },
-            },
-          ],
-        }
+        OR: [
+          {
+            name: { search: input.text },
+          },
+          {
+            bio: { search: input.text },
+          },
+        ],
+      }
       : {};
     return {
       total: await this.prisma.singer.count({
@@ -58,7 +53,7 @@ export class SingersService {
     return true;
   }
 
-  constructor(private prisma: PrismaService, private upload: UploadService) {}
+  constructor(private prisma: PrismaService, private upload: UploadService) { }
 
   async getById(id: string) {
     return await this.prisma.singer.findUnique({
@@ -77,7 +72,7 @@ export class SingersService {
   async update(input: UpdateSingerInput) {
     await this.getByIdOrFail(input.id);
     if (input.avatar) {
-      await this.upload.checkWithBucketOrFail(input.avatar, 'avatars');
+      await this.upload.checkWithBucketOrFail(input.avatar, "avatars");
     }
     return this.prisma.singer.update({
       where: { id: input.id },
@@ -92,7 +87,7 @@ export class SingersService {
 
   async create(input: CreateSingerInput) {
     if (input.avatar) {
-      await this.upload.checkWithBucketOrFail(input.avatar, 'avatars');
+      await this.upload.checkWithBucketOrFail(input.avatar, "avatars");
     }
     return this.prisma.singer.create({
       data: {

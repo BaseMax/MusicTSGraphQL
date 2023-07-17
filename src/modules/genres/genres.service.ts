@@ -1,23 +1,30 @@
-import { Service } from 'tsyringe';
-import { Prisma, PrismaService } from '../../utils/prisma.service';
-import { CreateGenreInput } from './dto/create-genre.input';
-import { UpdateGenreInput } from './dto/update-genre.input';
-import { BadRequestException } from '../../errors/badrequest.exception';
-import { NotFoundException } from '../../errors/notfound.exception';
+import { PrismaService } from "../../utils/prisma.service";
+import { Prisma } from "@prisma/client";
+import { CreateGenreInput } from "./dto/create-genre.input";
+import { UpdateGenreInput } from "./dto/update-genre.input";
+import { BadRequestException } from "../../errors/badrequest.exception";
+import { NotFoundException } from "../../errors/notfound.exception";
+import { injectable } from "tsyringe";
 
-injectable()
+@injectable()
 export class GenresService {
   async countMusics(id: string) {
+    // @ts-ignore
     const data = await this.prisma.genre.findUniqueOrThrow({
       where: { id },
       include: {
         _count: {
+
+    // @ts-ignore
           select: {
+
+    // @ts-ignore
             musics: true,
           },
         },
       },
     });
+    // @ts-ignore
     return data._count.musics;
   }
   constructor(private prisma: PrismaService) { }
@@ -46,17 +53,19 @@ export class GenresService {
         },
       });
     } catch (e) {
-      if (e instanceof Prisma.PrismaServiceKnownRequestError) {
-        if (e.code === 'P2002') {
-          throw new BadRequestException('name conflicting');
+      if (e instanceof Prisma.PrismaClientKnownRequestError) {
+        if (e.code === "P2002") {
+          throw new BadRequestException("name conflicting");
         }
       }
       throw e;
     }
   }
   public async create(input: CreateGenreInput) {
-    if (await this.prisma.genre.findUnique({ where: { name: input.name } })) {
-      throw new BadRequestException('genre already exists');
+    if (
+      await this.prisma.genre.findUnique({ where: { name: input.name } })
+    ) {
+      throw new BadRequestException("genre already exists");
     }
     return this.prisma.genre.create({
       data: {

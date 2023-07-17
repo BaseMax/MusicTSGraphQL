@@ -103,7 +103,7 @@
 
         /* Completeness */
         // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
-    },
-    "include": ["src/main.ts","src/create-admin.ts","src/modules/auth/**/*.ts","src/modules/users/**/*.ts","src/modules/utils/*.ts"]
-    // "exclude": ["src/modules/**/*.ts", "src/*.ts"]
+    }
+    ,"include": ["src/main.ts","src/create-admin.ts","src/modules/auth/**/*.ts","src/modules/users/**/*.ts","src/modules/utils/*.ts","src/modules/genres/*.ts","src/modules/singers/**/*.ts"]
+    ,"exclude": ["src/modules/**/*.ts", "src/*.ts"]
 }

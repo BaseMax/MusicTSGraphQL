@@ -1,4 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import { injectable } from "tsyringe";
-@injectable()
-export class PrismaService extends PrismaClient { }
+import { singleton } from "tsyringe";
+@singleton()
+export class PrismaService extends PrismaClient {}

@@ -1,6 +1,6 @@
-import { Role } from '../../users/user.model';
+import { Role } from "../../users/user.model";
 
 export interface UserAuthPayload {
-  id: string;
-  role: Role;
+    id: string;
+    role: Role;
 }

@@ -1,10 +1,10 @@
-import { Field, InputType, OmitType } from 'type-graphql';
-import { CreateCommentInput } from './create-comment.input';
+import { Field, InputType } from "type-graphql";
 
 @InputType()
-export class UpdateCommentInput extends OmitType(CreateCommentInput, [
-  'musicId',
-]) {
-  @Field()
-  id: string;
+export class UpdateCommentInput {
+    @Field()
+    id: string;
+
+    @Field()
+    text: string;
 }

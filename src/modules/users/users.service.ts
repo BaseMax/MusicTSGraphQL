@@ -6,8 +6,7 @@ import { NotFoundException } from "../../errors/notfound.exception";
 
 @injectable()
 export class UsersService {
-    constructor(private prisma: PrismaService) {
-    }
+    constructor(private prisma: PrismaService) {}
     getUserById(id: string): Promise<User | null> {
         return this.prisma.user.findUnique({ where: { id } });
     }

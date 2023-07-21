@@ -26,12 +26,19 @@ interface SizedUploadInput extends UploadInput {
 
 @injectable()
 export class UploadService {
-    constructor(private readonly s3: S3Client) { }
+    constructor(private readonly s3: S3Client) {}
     async uploadCover(input: UploadInput) {
         return await this.uploadImageSized({
             ...input,
             ...sizes.cover,
-            bucket: "backdrop",
+            bucket: "covers",
+        });
+    }
+    async uploadAvatar(input: UploadInput) {
+        return await this.uploadImageSized({
+            ...input,
+            ...sizes.avatar,
+            bucket: "avatars",
         });
     }
 
@@ -67,15 +74,15 @@ export class UploadService {
         const { bucket, exists } = await this.check(path);
 
         if (!exists || bucket !== expectedBucket) {
-            throw new NotFoundException(`invalid path :${path}`);
+            throw new NotFoundException(`path`, { path });
         }
     }
-    public async check(path: string) {
-        if (!path.startsWith("/")) {
-            throw new BadRequestException("path must start with '/' ");
+    public async check(p: string) {
+        const match = p.match(/^\/(.*)\/(.*)$/);
+        if (!match) {
+            throw new BadRequestException(`invalid path :"${p}"`);
         }
-        const [_, bucket, ...rest] = path.split("/");
-        const name = rest.join("/");
+        const [_, bucket, name] = match;
 
         let exists = true;
         try {
@@ -95,7 +102,7 @@ export class UploadService {
 
     private getKey(name: string) {
         const extension = path.extname(name);
-        const nameWithoutExt = path.basename(name,extension);
+        const nameWithoutExt = path.basename(name, extension);
         return `${nameWithoutExt}-${cuid()}${extension}`;
     }
 

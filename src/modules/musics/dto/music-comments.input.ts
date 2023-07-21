@@ -1,8 +1,8 @@
-import { Field, InputType } from 'type-graphql';
-import { CursorBasedPagination } from 'src/utils/cursor-pagination';
+import { Field, InputType } from "type-graphql";
+import { CursorBasedPagination } from "../../../utils/cursor-pagination";
 
 @InputType()
-export class MovieCommentsInput extends CursorBasedPagination {
-  @Field()
-  musicId: string;
+export class MusicCommentsInput extends CursorBasedPagination {
+    @Field()
+    musicId: string;
 }

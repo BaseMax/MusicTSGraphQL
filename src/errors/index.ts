@@ -5,4 +5,3 @@ export { NotFoundException } from "./notfound.exception";
 export { PermissionDeniedException } from "./permimssion-denied.exception";
 export { UnauthorizedException } from "./unauthorized.exception";
 export { ValidationFailedException } from "./validation-failed.exception";
-

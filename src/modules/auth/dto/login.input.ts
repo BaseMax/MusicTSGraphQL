@@ -1,12 +1,12 @@
-import { Field, InputType } from 'type-graphql';
-import { IsEmail } from 'class-validator';
+import { Field, InputType } from "type-graphql";
+import { IsEmail } from "class-validator";
 
 @InputType()
 export class LoginUserInput {
-  @IsEmail()
-  @Field()
-  email: string;
+    @IsEmail()
+    @Field()
+    email: string;
 
-  @Field()
-  password: string;
+    @Field()
+    password: string;
 }

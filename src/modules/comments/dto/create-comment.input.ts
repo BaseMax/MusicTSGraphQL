@@ -1,10 +1,10 @@
-import { Field, InputType } from 'type-graphql';
+import { Field, InputType } from "type-graphql";
 
 @InputType()
 export class CreateCommentInput {
-  @Field()
-  text: string;
+    @Field()
+    text: string;
 
-  @Field()
-  musicId: string;
+    @Field()
+    musicId: string;
 }

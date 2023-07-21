@@ -17,6 +17,8 @@ import { unwrapResolverError } from "@apollo/server/errors";
 import { BaseException } from "./errors/base.exception";
 import { ValidationFailedException } from "./errors/validation-failed.exception";
 import { uploadRoutes } from "./modules/upload/upload.controller";
+import { CommentsResolver } from "./modules/comments/comments.resolver";
+import { MusicsResolver } from "./modules/musics/musics.resolver";
 
 export function formatError(
     formattedError: GraphQLFormattedError,
@@ -41,16 +43,25 @@ export function formatError(
 
 async function main() {
     const schema = await buildSchema({
-        resolvers: [AuthResolver, GenresResolver, SingersResolver],
+        resolvers: [
+            AuthResolver,
+            GenresResolver,
+            SingersResolver,
+            CommentsResolver,
+            MusicsResolver,
+        ],
         container: { get: (cls) => container.resolve(cls) },
         authChecker: ({ context: { user } }, roles) => authChecker(roles)(user),
+        validate: true,
     });
 
     const app = fastify();
-    app.register(uploadRoutes)
+    app.register(uploadRoutes);
     const apollo = new ApolloServer<GqlContext>({
         schema,
+        introspection: true,
         plugins: [fastifyApolloDrainPlugin(app)],
+
         formatError,
     });
     await apollo.start();

@@ -1,34 +1,41 @@
-import { ObjectType, Field, ID, Int, registerEnumType } from "type-graphql";
+import {
+    ObjectType,
+    Field,
+    ID,
+    Int,
+    registerEnumType,
+    Float,
+} from "type-graphql";
 import { Singer } from "../singers/singer.model";
 import { Comment } from "../comments/comment.model";
 import { Genre } from "../genres/genre.model";
 
 @ObjectType()
 export class Music {
-  @Field(() => ID)
-  id: string;
+    @Field(() => ID)
+    id: string;
 
-  @Field({ nullable: true })
-  description?: string;
+    @Field({ nullable: true })
+    description?: string;
 
-  @Field(() => Int, { nullable: true })
-  duration?: number;
+    @Field(() => Float, { nullable: true })
+    duration?: number;
 
-  @Field(() => Date, { nullable: true })
-  releaseDate?: Date;
+    @Field(() => Date, { nullable: true })
+    releaseDate?: Date;
 
-  @Field()
-  cover: string;
+    @Field()
+    cover: string;
 
-  @Field()
-  link: string;
+    @Field()
+    link: string;
 
-  @Field(() => Genre)
-  genre: Genre;
+    @Field(() => Genre)
+    genre: Genre;
 
-  @Field(() => [Singer])
-  singers: Singer[];
+    @Field(() => [Singer])
+    singers: Singer[];
 
-  @Field(() => [Comment])
-  comments: Comment[];
+    @Field(() => [Comment])
+    comments: Comment[];
 }

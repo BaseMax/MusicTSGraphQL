@@ -1,20 +1,20 @@
-import { Field, InputType } from 'type-graphql';
-import { IsEmail, Length, Matches } from 'class-validator';
+import { Field, InputType } from "type-graphql";
+import { IsEmail, Length, Matches } from "class-validator";
 
 @InputType()
 export class RegisterUserInput {
-  @IsEmail()
-  @Field()
-  email: string;
+    @IsEmail()
+    @Field()
+    email: string;
 
-  @Field()
-  @Length(3, 40)
-  name: string;
+    @Field()
+    @Length(3, 40)
+    name: string;
 
-  @Field()
-  @Matches(
-    /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])[\da-zA-Z!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{8,}$/,
-  )
-  @Length(8, 100)
-  password: string;
+    @Field()
+    @Matches(
+        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])[\da-zA-Z!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{8,}$/
+    )
+    @Length(8, 100)
+    password: string;
 }

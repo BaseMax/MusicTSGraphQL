@@ -1,17 +1,17 @@
-import { Field, InputType } from 'type-graphql';
-import { Pagination } from 'src/utils/pagination.input';
+import { Field, InputType } from "type-graphql";
+import { Pagination } from "../../../utils/pagination.input";
 
 @InputType()
-export class SearchMovieInput extends Pagination {
-  @Field({ nullable: true })
-  text?: string;
+export class SearchMusicInput extends Pagination {
+    @Field({ nullable: true })
+    text?: string;
 
-  @Field(() => [String], { nullable: true })
-  genreIds?: string[];
+    @Field({ nullable: true })
+    genreId?: string;
 
-  @Field({ nullable: true })
-  startDate?: Date;
+    @Field({ nullable: true })
+    startDate?: Date;
 
-  @Field({ nullable: true })
-  endDate?: Date;
+    @Field({ nullable: true })
+    endDate?: Date;
 }

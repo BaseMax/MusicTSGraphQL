@@ -8,72 +8,66 @@ import { injectable } from "tsyringe";
 
 @injectable()
 export class GenresService {
-  async countMusics(id: string) {
-    // @ts-ignore
-    const data = await this.prisma.genre.findUniqueOrThrow({
-      where: { id },
-      include: {
-        _count: {
-
-    // @ts-ignore
-          select: {
-
-    // @ts-ignore
-            musics: true,
-          },
-        },
-      },
-    });
-    // @ts-ignore
-    return data._count.musics;
-  }
-  constructor(private prisma: PrismaService) { }
-
-  public async getById(id: string) {
-    return this.prisma.genre.findUnique({
-      where: { id },
-    });
-  }
-  public async getByIdOrFail(id: string) {
-    const genre = await this.getById(id);
-    if (!genre) {
-      throw new NotFoundException(`genre not found. id : '${id}'`);
+    async countMusics(id: string) {
+        const data = await this.prisma.genre.findUniqueOrThrow({
+            where: { id },
+            include: {
+                _count: {
+                    select: {
+                        musics: true,
+                    },
+                },
+            },
+        });
+        return data._count.musics;
     }
-    return genre;
-  }
-  public async update(input: UpdateGenreInput) {
-    await this.getByIdOrFail(input.id);
-    try {
-      return await this.prisma.genre.update({
-        where: {
-          id: input.id,
-        },
-        data: {
-          name: input.name,
-        },
-      });
-    } catch (e) {
-      if (e instanceof Prisma.PrismaClientKnownRequestError) {
-        if (e.code === "P2002") {
-          throw new BadRequestException("name conflicting");
+    constructor(private prisma: PrismaService) {}
+
+    public async getById(id: string) {
+        return this.prisma.genre.findUnique({
+            where: { id },
+        });
+    }
+    public async getByIdOrFail(id: string) {
+        const genre = await this.getById(id);
+        if (!genre) {
+            throw new NotFoundException(`genre not found. id : '${id}'`);
         }
-      }
-      throw e;
+        return genre;
     }
-  }
-  public async create(input: CreateGenreInput) {
-    if (
-      await this.prisma.genre.findUnique({ where: { name: input.name } })
-    ) {
-      throw new BadRequestException("genre already exists");
+    public async update(input: UpdateGenreInput) {
+        await this.getByIdOrFail(input.id);
+        try {
+            return await this.prisma.genre.update({
+                where: {
+                    id: input.id,
+                },
+                data: {
+                    name: input.name,
+                },
+            });
+        } catch (e) {
+            if (e instanceof Prisma.PrismaClientKnownRequestError) {
+                if (e.code === "P2002") {
+                    throw new BadRequestException("name conflicting");
+                }
+            }
+            throw e;
+        }
     }
-    return this.prisma.genre.create({
-      data: {
-        name: input.name,
-      },
-    });
-  }
-  public getAll() {
-    return this.prisma.genre.findMany();
-  }
+    public async create(input: CreateGenreInput) {
+        if (
+            await this.prisma.genre.findUnique({ where: { name: input.name } })
+        ) {
+            throw new BadRequestException("genre already exists");
+        }
+        return this.prisma.genre.create({
+            data: {
+                name: input.name,
+            },
+        });
+    }
+    public getAll() {
+        return this.prisma.genre.findMany();
+    }
 }

@@ -10,16 +10,15 @@ export async function uploadRoutes(fastify: FastifyInstance) {
     fastify.addHook("preHandler", (req, _rep, done) => {
         if (req.headers.authorization) {
             try {
-                // @ts-ignore
                 req.user = getUserFromToken(req.headers.authorization);
             } catch {
+                console.log("error here");
                 throw new Errors.UnauthorizedException();
             }
         } else {
             throw new Errors.UnauthorizedException();
         }
 
-        // @ts-ignore
         if (!authChecker([Role.admin, Role.superadmin])(req.user))
             throw new Errors.UnauthorizedException();
         done();
@@ -43,6 +42,21 @@ export async function uploadRoutes(fastify: FastifyInstance) {
                 throw new Errors.BadRequestException("file required");
             }
             const url = await uploadService.uploadCover({
+                image: buffer,
+                name,
+            });
+            reply.send({ url });
+        },
+    });
+    fastify.post<{ Params: UploadParams }>("/upload/avatars/:name", {
+        handler: async (req, reply) => {
+            const name = req.params.name;
+            const data = await req.file();
+            const buffer = await data?.toBuffer();
+            if (!buffer) {
+                throw new Errors.BadRequestException("file required");
+            }
+            const url = await uploadService.uploadAvatar({
                 image: buffer,
                 name,
             });

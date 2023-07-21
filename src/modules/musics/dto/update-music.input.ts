@@ -1,72 +1,56 @@
-import { Field, ID, InputType,  } from 'type-graphql';
-import { CreateMovieInput } from './create-music.input';
+import {
+    IsDefined,
+    IsNotEmpty,
+    IsOptional,
+    IsString,
+    MaxLength,
+    ValidateIf,
+} from "class-validator";
+import { Field, Float, ID, InputType } from "type-graphql";
 
 @InputType()
-export class UpdateMovieInput extends PartialType(CreateMovieInput) {
-  @Field(() => ID)
-  id: string;
+export class UpdateMusicInput {
+    @Field(() => ID)
+    id: string;
 
+    @IsString()
+    @MaxLength(100)
+    @Field()
+    name?: string;
 
+    @IsOptional()
+    @IsString()
+    @MaxLength(2000)
+    @Field(() => String, { nullable: true })
+    description?: string | null;
 
-  @IsString()
-  @MaxLength(100)
-  @Field({nullable:true})
-  name?: string;
+    @IsOptional()
+    @Field(() => Float, { nullable: true })
+    duration?: number | null;
 
-  @IsOptional()
-  @IsString()
-  @MaxLength(500)
-  @Field({ nullable: true })
-  plot?: string;
+    @Field(() => Date)
+    releaseDate?: Date | null;
 
-  @IsOptional()
-  @IsString()
-  @MaxLength(2000)
-  @Field({ nullable: true })
-  description?: string;
+    @ValidateIf((_, v) => v !== undefined)
+    @IsDefined()
+    @IsNotEmpty()
+    @Field()
+    cover?: string;
 
-  @IsOptional()
-  @Field(() => Float, { nullable: true })
-  @Min(0)
-  @Max(10)
-  imdbScore?: number;
+    @ValidateIf((_, v) => v !== undefined)
+    @IsDefined()
+    @IsNotEmpty()
+    @Field()
+    link?: string;
 
-  @IsOptional()
-  @IsString()
-  @Field({ nullable: true })
-  imdbRef?: string;
+    @ValidateIf((_, v) => v !== undefined)
+    @IsDefined()
+    @IsNotEmpty()
+    @Field()
+    genreId?: string;
 
-  @IsOptional()
-  @Field(() => Int, { nullable: true })
-  duration?: number;
-
-  @Field(() => Date,{nullable:true})
-  releaseDate?: Date;
-
-  @Field({nullable:true})
-  backdrop?: string;
-
-  @Field()
-  poster: string;
-
-  @Field(() => [String])
-  gallery: string[];
-
-  @Field(() => [String])
-  genreIds: string[];
-
-  @ValidateNested({ each: true })
-  @Type(() => CreateMovieSingerInput)
-  @Field(() => [CreateMovieSingerInput])
-  singers: CreateMovieSingerInput[];
-
-  @ValidateNested({ each: true })
-  @Type(() => CreateDownloadableAssetInput)
-  @Field(() => [CreateDownloadableAssetInput])
-  downloadableAssets: CreateDownloadableAssetInput[];
-
-  @ValidateNested({ each: true })
-  @Type(() => CreateMovieLanguageInput)
-  @Field(() => [CreateMovieLanguageInput])
-  languages: CreateMovieLanguageInput[];
+    @ValidateIf((_, v) => v !== undefined)
+    @IsDefined()
+    @Field(() => [String])
+    singers?: string[];
 }

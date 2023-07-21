@@ -48,7 +48,6 @@ services:
                 condition: service_started
 
     minio:
-
         image: minio/minio
         ports:
             - "9000:9000"
@@ -72,4 +71,6 @@ services:
             /bin/mc anonymous set download local/musics;
             /bin/mc mb --ignore-existing local/covers;
             /bin/mc anonymous set download local/covers;
+            /bin/mc mb --ignore-existing local/avatars;
+            /bin/mc anonymous set download local/avatars;
             exit 0;"

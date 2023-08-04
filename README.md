@@ -1,8 +1,4 @@
-Project Name
-
-MusicTSGraphQL
-
-# Demo
+# Music TS GraphQL
 
 # Features
 

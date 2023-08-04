@@ -1,13 +1,4 @@
-import {
-    IsDefined,
-    IsEmail,
-    IsNotIn,
-    IsOptional,
-    IsString,
-    Length,
-    Max,
-    ValidateIf,
-} from "class-validator";
+import { IsDefined, IsString, ValidateIf } from "class-validator";
 import { Field, InputType } from "type-graphql";
 
 @InputType()

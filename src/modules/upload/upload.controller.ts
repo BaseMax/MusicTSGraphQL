@@ -1,4 +1,4 @@
-import { FastifyInstance, FastifyPluginOptions } from "fastify";
+import { FastifyInstance } from "fastify";
 import { container } from "tsyringe";
 import { authChecker } from "../../authChecker";
 import { getUserFromToken } from "../auth/get-user-from-token";
@@ -78,7 +78,7 @@ export async function uploadRoutes(fastify: FastifyInstance) {
     });
     fastify.setErrorHandler<Error>((error, _req, rep) => {
         if (error instanceof Errors.BaseException) {
-            let status: number = getStatus(error); // Unprocessable Entity
+            const status: number = getStatus(error); // Unprocessable Entity
 
             rep.status(status).send({
                 error: error.code,

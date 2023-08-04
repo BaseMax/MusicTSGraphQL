@@ -18,4 +18,3 @@ export class Album {
     @Field({ nullable: true })
     cover?: string;
 }
-

@@ -6,12 +6,18 @@ container.register("jwt-expireTime", { useValue: 3600 * 24 });
 container.register(S3Client, {
     useValue: new S3Client({
         credentials: {
-            accessKeyId: process.env.S3_ACCESS_KEY!,
-            secretAccessKey: process.env.S3_SECRET_KEY!,
+            accessKeyId: assertString(process.env.S3_ACCESS_KEY),
+            secretAccessKey: assertString(process.env.S3_SECRET_KEY),
         },
-        endpoint: process.env.S3_URI!,
+        endpoint: assertString(process.env.S3_URI),
         forcePathStyle: true,
         region: "eu-west-1",
     }),
 });
+function assertString(s: string | undefined): string {
+    if (!s) {
+        throw new Error("expected string");
+    }
+    return s;
+}
 export { container } from "tsyringe";

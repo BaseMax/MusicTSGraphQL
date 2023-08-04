@@ -91,7 +91,7 @@ export class MusicsService {
                 ...(input.singers
                     ? {
                           singers: {
-                              connect: input.singers!.map((i) => ({ id: i })),
+                              connect: input.singers.map((i) => ({ id: i })),
                           },
                       }
                     : {}),

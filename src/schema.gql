@@ -4,64 +4,64 @@
 # -----------------------------------------------
 
 type Album {
-  cover: String
-  id: ID!
-  musics: [Music!]!
-  releaseDate: DateTime
-  title: String!
+    cover: String
+    id: ID!
+    musics: [Music!]!
+    releaseDate: DateTime
+    title: String!
 }
 
 type AuthPayload {
-  token: String!
-  user: User!
+    token: String!
+    user: User!
 }
 
 type Comment {
-  createdAt: DateTime!
-  id: ID!
-  isApproved: Boolean!
-  music: Music!
-  text: String!
-  user: User!
+    createdAt: DateTime!
+    id: ID!
+    isApproved: Boolean!
+    music: Music!
+    text: String!
+    user: User!
 }
 
 input CreateAlbumInput {
-  cover: String!
-  musics: [String!]!
-  releaseDate: DateTime
-  title: String!
+    cover: String!
+    musics: [String!]!
+    releaseDate: DateTime
+    title: String!
 }
 
 input CreateCommentInput {
-  musicId: String!
-  text: String!
+    musicId: String!
+    text: String!
 }
 
 input CreateGenreInput {
-  name: String!
+    name: String!
 }
 
 input CreateMusicInput {
-  cover: String!
-  description: String
-  duration: Float
-  genreId: String!
-  link: String!
-  name: String!
-  releaseDate: DateTime!
-  singers: [String!]!
+    cover: String!
+    description: String
+    duration: Float
+    genreId: String!
+    link: String!
+    name: String!
+    releaseDate: DateTime!
+    singers: [String!]!
 }
 
 input CreateSingerInput {
-  avatar: String
-  bio: String
-  dateOfBirth: DateTime
-  name: String!
+    avatar: String
+    bio: String
+    dateOfBirth: DateTime
+    name: String!
 }
 
 input CursorBasedPagination {
-  cursor: String
-  limit: Int! = 16
+    cursor: String
+    limit: Int! = 16
 }
 
 """
@@ -70,159 +70,159 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 scalar DateTime
 
 type Genre {
-  id: ID!
-  musicCount: Float!
-  name: String!
+    id: ID!
+    musicCount: Float!
+    name: String!
 }
 
 input LoginUserInput {
-  email: String!
-  password: String!
+    email: String!
+    password: String!
 }
 
 type Music {
-  comments(pagination: CursorBasedPagination!): [Comment!]!
-  cover: String!
-  description: String
-  duration: Float
-  genre: Genre!
-  id: ID!
-  link: String!
-  name: String!
-  releaseDate: DateTime
-  singers: [Singer!]!
+    comments(pagination: CursorBasedPagination!): [Comment!]!
+    cover: String!
+    description: String
+    duration: Float
+    genre: Genre!
+    id: ID!
+    link: String!
+    name: String!
+    releaseDate: DateTime
+    singers: [Singer!]!
 }
 
 type Mutation {
-  approveComment(id: String!): Comment!
-  changeRole(role: Role!, userId: String!): User!
-  createAlbum(input: CreateAlbumInput!): Album!
-  createComment(input: CreateCommentInput!): Comment!
-  createGenre(input: CreateGenreInput!): Genre!
-  createMusic(input: CreateMusicInput!): Music!
-  createSinger(input: CreateSingerInput!): Singer!
-  deleteComment(id: String!): Boolean!
-  deleteMusic(id: String!): Boolean!
-  deleteSinger(id: String!): Boolean!
-  login(input: LoginUserInput!): AuthPayload!
-  register(input: RegisterUserInput!): AuthPayload!
-  updateAlbum(input: UpdateAlbumInput!): Album!
-  updateComment(input: UpdateCommentInput!): Comment!
-  updateGenre(input: UpdateGenreInput!): Genre!
-  updateMusic(input: UpdateMusicInput!): Music!
-  updateSinger(input: UpdateSingerInput!): Singer!
+    approveComment(id: String!): Comment!
+    changeRole(role: Role!, userId: String!): User!
+    createAlbum(input: CreateAlbumInput!): Album!
+    createComment(input: CreateCommentInput!): Comment!
+    createGenre(input: CreateGenreInput!): Genre!
+    createMusic(input: CreateMusicInput!): Music!
+    createSinger(input: CreateSingerInput!): Singer!
+    deleteComment(id: String!): Boolean!
+    deleteMusic(id: String!): Boolean!
+    deleteSinger(id: String!): Boolean!
+    login(input: LoginUserInput!): AuthPayload!
+    register(input: RegisterUserInput!): AuthPayload!
+    updateAlbum(input: UpdateAlbumInput!): Album!
+    updateComment(input: UpdateCommentInput!): Comment!
+    updateGenre(input: UpdateGenreInput!): Genre!
+    updateMusic(input: UpdateMusicInput!): Music!
+    updateSinger(input: UpdateSingerInput!): Singer!
 }
 
 type PaginatedAlbums {
-  data: [Album!]!
-  total: Int!
+    data: [Album!]!
+    total: Int!
 }
 
 type PaginatedMusics {
-  data: [Music!]!
-  total: Int!
+    data: [Music!]!
+    total: Int!
 }
 
 type PaginatedSinger {
-  data: [Singer!]!
-  total: Int!
+    data: [Singer!]!
+    total: Int!
 }
 
 type Query {
-  album(id: String!): Album
-  genre(id: String!): Genre
-  genres: [Genre!]!
-  music(id: String!): Music
-  searchAlbums(input: SearchAlbumInput!): PaginatedAlbums!
-  searchMusic(input: SearchMusicInput!): PaginatedMusics!
-  searchSingers(input: SearchSingerInput!): PaginatedSinger!
-  singer(id: String!): Singer
-  unapprovedComments(pagination: CursorBasedPagination!): [Comment!]!
-  user: User!
+    album(id: String!): Album
+    genre(id: String!): Genre
+    genres: [Genre!]!
+    music(id: String!): Music
+    searchAlbums(input: SearchAlbumInput!): PaginatedAlbums!
+    searchMusic(input: SearchMusicInput!): PaginatedMusics!
+    searchSingers(input: SearchSingerInput!): PaginatedSinger!
+    singer(id: String!): Singer
+    unapprovedComments(pagination: CursorBasedPagination!): [Comment!]!
+    user: User!
 }
 
 input RegisterUserInput {
-  email: String!
-  name: String!
-  password: String!
+    email: String!
+    name: String!
+    password: String!
 }
 
 enum Role {
-  admin
-  superadmin
-  user
+    admin
+    superadmin
+    user
 }
 
 input SearchAlbumInput {
-  limit: Int! = 16
-  skip: Int! = 0
-  text: String
+    limit: Int! = 16
+    skip: Int! = 0
+    text: String
 }
 
 input SearchMusicInput {
-  endDate: DateTime
-  genreId: String
-  limit: Int! = 16
-  skip: Int! = 0
-  startDate: DateTime
-  text: String
+    endDate: DateTime
+    genreId: String
+    limit: Int! = 16
+    skip: Int! = 0
+    startDate: DateTime
+    text: String
 }
 
 input SearchSingerInput {
-  limit: Int! = 16
-  skip: Int! = 0
-  text: String
+    limit: Int! = 16
+    skip: Int! = 0
+    text: String
 }
 
 type Singer {
-  avatar: String
-  bio: String
-  dateOfBirth: DateTime
-  id: ID!
-  musics: [Music!]!
-  name: String!
+    avatar: String
+    bio: String
+    dateOfBirth: DateTime
+    id: ID!
+    musics: [Music!]!
+    name: String!
 }
 
 input UpdateAlbumInput {
-  cover: String
-  id: String!
-  musics: [String!]
-  releaseDate: DateTime
-  title: String
+    cover: String
+    id: String!
+    musics: [String!]
+    releaseDate: DateTime
+    title: String
 }
 
 input UpdateCommentInput {
-  id: String!
-  text: String!
+    id: String!
+    text: String!
 }
 
 input UpdateGenreInput {
-  id: ID!
-  name: String!
+    id: ID!
+    name: String!
 }
 
 input UpdateMusicInput {
-  cover: String
-  description: String
-  duration: Float
-  genreId: String
-  id: ID!
-  link: String
-  name: String
-  releaseDate: DateTime
-  singers: [String!]
+    cover: String
+    description: String
+    duration: Float
+    genreId: String
+    id: ID!
+    link: String
+    name: String
+    releaseDate: DateTime
+    singers: [String!]
 }
 
 input UpdateSingerInput {
-  avatar: String
-  bio: String
-  dateOfBirth: DateTime
-  id: String!
-  name: String
+    avatar: String
+    bio: String
+    dateOfBirth: DateTime
+    id: String!
+    name: String
 }
 
 type User {
-  id: ID!
-  name: String!
-  role: Role!
+    id: ID!
+    name: String!
+    role: Role!
 }

@@ -61,12 +61,10 @@ services:
             context: .
             target: development
         ports:
-          - 5555:5555
+            - 5555:5555
         depends_on:
             db:
                 condition: service_started
-
-
 
     minio:
         image: minio/minio

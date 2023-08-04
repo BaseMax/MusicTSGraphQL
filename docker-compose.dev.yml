@@ -16,4 +16,3 @@ services:
     migratedb:
         environment:
             - DATABASE_URL=postgres://postgres:postgres@db:5432/dev
-

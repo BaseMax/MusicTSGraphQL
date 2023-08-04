@@ -1,11 +1,4 @@
-import {
-    ObjectType,
-    Field,
-    ID,
-    Int,
-    registerEnumType,
-    Float,
-} from "type-graphql";
+import { ObjectType, Field, ID, Float } from "type-graphql";
 import { Singer } from "../singers/singer.model";
 import { Comment } from "../comments/comment.model";
 import { Genre } from "../genres/genre.model";

@@ -3,4 +3,4 @@ import PaginatedResponse from "../../../utils/paginated-response";
 import { Singer } from "../singer.model";
 
 @ObjectType()
-export class PaginatedSinger extends PaginatedResponse(Singer) { }
+export class PaginatedSinger extends PaginatedResponse(Singer) {}

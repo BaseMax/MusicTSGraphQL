@@ -1,8 +1,6 @@
 import { PrismaService } from "../../utils/prisma.service";
-import { Prisma } from "@prisma/client";
 import { CreateAlbumInput } from "./dto/create-album.input";
 import { UpdateAlbumInput } from "./dto/update-album.input";
-import { BadRequestException } from "../../errors/badrequest.exception";
 import { NotFoundException } from "../../errors/notfound.exception";
 import { injectable } from "tsyringe";
 import { MusicsService } from "../musics/musics.service";
@@ -24,7 +22,7 @@ export class AlbumsService {
         });
         return musics?.musics;
     }
-    constructor(private prisma: PrismaService, private musics: MusicsService) { }
+    constructor(private prisma: PrismaService, private musics: MusicsService) {}
 
     public async getById(id: string) {
         return this.prisma.album.findUnique({
@@ -41,17 +39,17 @@ export class AlbumsService {
     public async search(input: SearchAlbumInput) {
         const query = input.text
             ? {
-                where: {
-                    OR: [
-                        { title: { search: input.text } },
-                        {
-                            musics: {
-                                some: { name: { search: input.text } },
-                            },
-                        },
-                    ],
-                },
-            }
+                  where: {
+                      OR: [
+                          { title: { search: input.text } },
+                          {
+                              musics: {
+                                  some: { name: { search: input.text } },
+                              },
+                          },
+                      ],
+                  },
+              }
             : {};
         const data = await this.prisma.album.findMany({
             skip: input.skip,
@@ -78,10 +76,10 @@ export class AlbumsService {
                 cover: input.cover,
                 ...(input.musics
                     ? {
-                        musics: {
-                            connect: input.musics.map((id) => ({ id })),
-                        },
-                    }
+                          musics: {
+                              connect: input.musics.map((id) => ({ id })),
+                          },
+                      }
                     : {}),
             },
         });

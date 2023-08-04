@@ -1,4 +1,4 @@
-import { inject, injectable } from "tsyringe";
+import { injectable } from "tsyringe";
 import { User } from "@prisma/client";
 import { PrismaService } from "../../utils/prisma.service";
 import { Role } from "./user.model";

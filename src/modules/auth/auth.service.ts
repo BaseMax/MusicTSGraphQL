@@ -1,4 +1,4 @@
-import { inject, injectable } from "tsyringe";
+import { injectable } from "tsyringe";
 import { PrismaService } from "../../utils/prisma.service";
 import { UsersService } from "../users/users.service";
 import { RegisterUserInput } from "./dto/register.input";

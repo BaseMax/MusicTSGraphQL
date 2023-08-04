@@ -82,6 +82,7 @@ export class UploadService {
         if (!match) {
             throw new BadRequestException(`invalid path :"${p}"`);
         }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const [_, bucket, name] = match;
 
         let exists = true;

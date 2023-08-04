@@ -19,7 +19,7 @@ import { SearchAlbumInput } from "./dto/search-album.input";
 @injectable()
 @Resolver(() => Album)
 export class AlbumsResolver {
-    constructor(private service: AlbumsService) { }
+    constructor(private service: AlbumsService) {}
 
     @Query(() => Album, { nullable: true })
     public album(@Arg("id") id: string) {

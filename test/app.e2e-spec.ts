@@ -319,9 +319,6 @@ describe("AppController (e2e)", () => {
         });
     });
     describe("authentication", () => {
-        let user: User;
-        let authToken: string;
-
         it("should register a new user and allow them to log in", async () => {
             // Register a new user
             const name = "Smith";
@@ -349,9 +346,6 @@ describe("AppController (e2e)", () => {
             expect(registerResponse.body.data).not.toBeNull();
             expect(registerResponse.body.data.register.token).toBeDefined();
             expect(registerResponse.body.data.register.user.name).toBe(name);
-
-            user = registerResponse.body.data.register.user;
-            authToken = registerResponse.body.data.register.token;
 
             // Log in with the same credentials used during registration
             const loginResponse = await request(url)

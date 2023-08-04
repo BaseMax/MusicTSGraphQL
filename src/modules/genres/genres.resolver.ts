@@ -8,7 +8,6 @@ import {
     Arg,
     Authorized,
 } from "type-graphql";
-import { CurrentUser } from "../auth/current-user.decorator";
 import { Role } from "../users/user.model";
 import { CreateGenreInput } from "./dto/create-genre.input";
 import { UpdateGenreInput } from "./dto/update-genre.input";

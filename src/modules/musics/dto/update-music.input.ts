@@ -13,9 +13,10 @@ export class UpdateMusicInput {
     @Field(() => ID)
     id: string;
 
+    @ValidateIf((_, v) => v !== undefined)
     @IsString()
     @MaxLength(100)
-    @Field()
+    @Field({ nullable: true })
     name?: string;
 
     @IsOptional()
@@ -28,29 +29,30 @@ export class UpdateMusicInput {
     @Field(() => Float, { nullable: true })
     duration?: number | null;
 
-    @Field(() => Date)
+    @IsOptional()
+    @Field(() => Date, { nullable: true })
     releaseDate?: Date | null;
 
     @ValidateIf((_, v) => v !== undefined)
     @IsDefined()
     @IsNotEmpty()
-    @Field()
+    @Field({ nullable: true })
     cover?: string;
 
     @ValidateIf((_, v) => v !== undefined)
     @IsDefined()
     @IsNotEmpty()
-    @Field()
+    @Field({ nullable: true })
     link?: string;
 
     @ValidateIf((_, v) => v !== undefined)
     @IsDefined()
     @IsNotEmpty()
-    @Field()
+    @Field({ nullable: true })
     genreId?: string;
 
     @ValidateIf((_, v) => v !== undefined)
     @IsDefined()
-    @Field(() => [String])
+    @Field(() => [String], { nullable: true })
     singers?: string[];
 }

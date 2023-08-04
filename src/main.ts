@@ -19,6 +19,7 @@ import { ValidationFailedException } from "./errors/validation-failed.exception"
 import { uploadRoutes } from "./modules/upload/upload.controller";
 import { CommentsResolver } from "./modules/comments/comments.resolver";
 import { MusicsResolver } from "./modules/musics/musics.resolver";
+import { AlbumsResolver } from "./modules/albums/albums.resolver";
 
 export function formatError(
     formattedError: GraphQLFormattedError,
@@ -49,9 +50,11 @@ async function main() {
             SingersResolver,
             CommentsResolver,
             MusicsResolver,
+            AlbumsResolver
         ],
         container: { get: (cls) => container.resolve(cls) },
         authChecker: ({ context: { user } }, roles) => authChecker(roles)(user),
+        emitSchemaFile: './src/schema.gql',
         validate: true,
     });
 

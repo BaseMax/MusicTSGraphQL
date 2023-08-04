@@ -9,6 +9,11 @@ services:
     db:
         environment:
             POSTGRES_DB: dev
+    studio:
+        environment:
+            - DATABASE_URL=postgres://postgres:postgres@db:5432/dev
+
     migratedb:
         environment:
             - DATABASE_URL=postgres://postgres:postgres@db:5432/dev
+

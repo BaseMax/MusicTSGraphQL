@@ -46,6 +46,27 @@ services:
         depends_on:
             db:
                 condition: service_started
+    studio:
+        image: app:latest
+        command:
+            [
+                "./wait-for-it/wait-for-it.sh",
+                "db:5432",
+                "--",
+                "npx",
+                "prisma",
+                "studio",
+            ]
+        build:
+            context: .
+            target: development
+        ports:
+          - 5555:5555
+        depends_on:
+            db:
+                condition: service_started
+
+
 
     minio:
         image: minio/minio

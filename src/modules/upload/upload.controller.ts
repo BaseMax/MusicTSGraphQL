@@ -12,7 +12,6 @@ export async function uploadRoutes(fastify: FastifyInstance) {
             try {
                 req.user = getUserFromToken(req.headers.authorization);
             } catch {
-                console.log("error here");
                 throw new Errors.UnauthorizedException();
             }
         } else {

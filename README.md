@@ -17,14 +17,16 @@ This project is built using the following technologies:
 - **Testing**: Jest (Testing framework)
 - **Code Quality**: ESLint (Linting), Prettier (Code formatting)
 
-## Authentication 
+## Authentication
+
 Authentication is done through an Authorization Header using a token. The token can be obtained by calling the login and register mutations.
 
 Once the token is obtained, it needs to be included in the Authorization Header of all subsequent GraphQL requests. The app validates the token and restricts access to certain mutations and queries based on the token's permissions.
 
 Some mutations and queries require higher privileges, such as a specific role, to be executed. These operations can only be performed by users with the required privileges.
 
-example Header : 
+Example Header:
+
 ```
 Authorization: <token>
 ```
@@ -41,7 +43,9 @@ To upload a file, you should make a POST request to the `/upload/<type>/<name-pr
 The `<type>` parameter specifies the type of the uploaded file, while the `<name-prefix>` parameter is used to generate a unique filename for the uploaded file. The uploaded file will be resized and saved to the server, and the response will contain a JSON object with the URL of the uploaded file. For example:
 additionally there is a route to upload Musics 
 something like : `/upload/music/<name-prefix>.mp3`
-example curl request : 
+
+Example curl request:
+
 ```
 curl http://localhost:3000/upload/music/something.mp3 -F "file=@y.mp3" -H 'Authorization: <token>'
 ```
@@ -52,9 +56,7 @@ curl http://localhost:3000/upload/music/something.mp3 -F "file=@y.mp3" -H 'Autho
 
 You can use the returned URL wherever a file is required in your application.
 
-
 # Usage
-
 
 To use this project, follow these steps:
 
@@ -73,7 +75,7 @@ To use this project, follow these steps:
 3. Run the app using Docker Compose:
 
    ```
-        sudo docker compose -p ci -f docker-compose.base-dev.yml -f docker-compose.dev.yml up --build
+   sudo docker compose -p ci -f docker-compose.base-dev.yml -f docker-compose.dev.yml up --build
    ```
 
    This will start the app in development mode, with hotreloading enabled. The GraphQL playground will be available at [http://localhost:3000/graphql. ↗](http://localhost:3000/graphql.)
@@ -87,17 +89,20 @@ To use this project, follow these steps:
 5. Create an admin account:
 
    ```
-       node dist/create-admin.js
+   node dist/create-admin.js
    ```
 
    It will prompt you for an email, password, and name to create the superuser account.
 
 ## Testing
-Run the following command : 
+
+Run the following command:
+
 ```
 sudo ./test.sh
 ```
-it will automatically do everything and exit with 0 status if everything work well
+
+It will automatically do everything and exit with 0 status if everything work well
 
 ## Examples
 
@@ -206,6 +211,7 @@ Here are some example GraphQL queries:
        deleteComment(id: "<comment_id>")
    }
    ```
+
 ## API Documentation
 
 The following table describes all the mutations and queries available in the API:
@@ -243,3 +249,5 @@ The following table describes all the mutations and queries available in the API
 ## License
 
 This project is licensed under the GPL-3 license. Contributions are welcome, please follow the guidelines in the CONTRIBUTING.md file.
+
+Copyright 2023, Max Base

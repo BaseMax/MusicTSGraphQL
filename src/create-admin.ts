@@ -5,6 +5,7 @@ import { UsersService } from "./modules/users/users.service";
 import { Role } from "./modules/users/user.model";
 import { AuthService } from "./modules/auth/auth.service";
 import { container } from "./container";
+
 async function bootstrap() {
     const rl = createInterface(process.stdin, process.stdout);
 
@@ -22,4 +23,5 @@ async function bootstrap() {
     console.log("end");
     process.exit(0);
 }
+
 bootstrap();

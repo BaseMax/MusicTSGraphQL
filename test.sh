@@ -1,14 +1,14 @@
 #!/bin/sh
-# author: https://blog.harrison.dev/2016/06/19/integration-testing-with-docker-compose.html
+# author: https://blog.harrison.dev/2016/06/19/integration-testing-with-docker compose.html
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m'
 cleanup () {
-  docker-compose -p ci kill
-  docker-compose -p ci rm -f
+  docker compose -p ci kill
+  docker compose -p ci rm -f
 }
 trap 'cleanup ; printf "${RED}Tests Failed For Unexpected Reasons${NC}\n"' HUP INT QUIT PIPE TERM
-docker-compose -p ci -f docker-compose.base-dev.yml -f docker-compose.test.yml up -d --build
+docker compose -p ci -f docker-compose.base-dev.yml -f docker-compose.test.yml up -d --build
 if [ $? -ne 0 ] ; then
   printf "${RED}Docker Compose Failed${NC}\n"
   exit -1

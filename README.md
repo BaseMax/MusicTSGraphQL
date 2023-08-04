@@ -1,42 +1,54 @@
-# MovieTSGraphQL
+Project Name
 
-MovieTSGraphQL is a GraphQL web service built using NestJS, Prisma ORM, PostgreSQL, and Minio. The project provides functionality to manage movies, categories, actors, directors, comments, and more. It aims to create a web service with various features similar to Netflix.
+MusicTSGraphQL
 
-## Demo
+# Demo
 
-## Features
+# Features
 
--   Manage movies, categories, actors, directors, comments, and more.
--   Secure authentication and authorization system.
--   GraphQL API for easy integration with any frontend framework.
--   Optimized for high performance and scalability.
+- Song and album management
+- Comment addition and rating
+- Information retrieval
 
-## Authentication
+# Stack
 
-Authentication is done through an Authorization Header using a Bearer token. The token can be obtained by calling the login and register mutations.
+This project is built using the following technologies:
+
+- **Language**: TypeScript (Type-safe superset of JavaScript)
+- **Database**: Prisma (ORM for database access)
+- **Web Framework**: Fastify (High-performance web framework)
+- **GraphQL Library**: Apollo Server (GraphQL implementation)
+- **Testing**: Jest (Testing framework)
+- **Code Quality**: ESLint (Linting), Prettier (Code formatting)
+
+## Authentication 
+Authentication is done through an Authorization Header using a token. The token can be obtained by calling the login and register mutations.
 
 Once the token is obtained, it needs to be included in the Authorization Header of all subsequent GraphQL requests. The app validates the token and restricts access to certain mutations and queries based on the token's permissions.
 
 Some mutations and queries require higher privileges, such as a specific role, to be executed. These operations can only be performed by users with the required privileges.
 
-example Header :
-
+example Header : 
 ```
-Authorization: Bearer <token>
+Authorization: <token>
 ```
 
 ## File upload
 
-This app supports file upload through a dedicated endpoint at `/upload/<type>/<name-prefix>`. The uploaded file will be resized to a specific size based on the chosen type. Currently, the supported types and sizes are:
+This app supports file upload through a dedicated endpoint at `/upload/<type>/<name-prefix>.extension`. If the uploaded file is an image it will be resized to a specific size based on the chosen type. Currently, the supported types and sizes are:
 
--   `avatar`: { width: 512, height: 512 }
--   `gallery`: { width: 1920, height: 1080 }
--   `backdrop`: { width: 1920, height: 1080 }
--   `poster`: { width: 600, height: 900 }
+- `cover`: { width: 600, height: 600 }
+- `avatar`: { width: 600, height: 600 }
 
 To upload a file, you should make a POST request to the `/upload/<type>/<name-prefix>` endpoint with the file contents as the request body. The request body should be a binary file, not multipart form data.
 
 The `<type>` parameter specifies the type of the uploaded file, while the `<name-prefix>` parameter is used to generate a unique filename for the uploaded file. The uploaded file will be resized and saved to the server, and the response will contain a JSON object with the URL of the uploaded file. For example:
+additionally there is a route to upload Musics 
+something like : `/upload/music/<name-prefix>.mp3`
+example curl request : 
+```
+curl http://localhost:3000/upload/music/something.mp3 -F "file=@y.mp3" -H 'Authorization: <token>'
+```
 
 ```
 {"url":"/poster/testtt-cliiy9tkb000015ln9byqftw4.jpeg"}
@@ -44,228 +56,194 @@ The `<type>` parameter specifies the type of the uploaded file, while the `<name
 
 You can use the returned URL wherever a file is required in your application.
 
-## Stack
 
--   NestJS: A Node.js framework for building efficient and scalable server-side applications. It provides a modular architecture that allows developers to easily organize their code and use a wide range of plugins.
--   Prisma ORM: A modern database toolkit that provides a type-safe and intuitive way to access databases. It supports multiple databases and provides features like migrations, schema generation, and query building.
--   PostgreSQL: A powerful open-source relational database management system that provides features like triggers, transactions, and foreign key constraints. It is widely used in enterprise applications.
--   Minio: A high-performance distributed object storage server that provides features like versioning, lifecycle management, and access control. It is compatible with Amazon S3 API and provides a scalable and cost-effective solution for storing and retrieving large amounts of data.
+# Usage
 
-## Usage
 
 To use this project, follow these steps:
 
 1. Clone this repository:
 
-```bash
-git clone https://github.com/BaseMax/MovieTSGraphQL
-```
+   ````
+   git clone https://github.com/basemax/musictsgraphql
+   ```
 
 2. Install dependencies:
 
-```bash
-npm install
-```
+   ````
+   npm install
+   ```
 
 3. Run the app using Docker Compose:
 
-```bash
-sudo docker-compose -f docker-compose.dev.yml up
-```
+   ```
+        sudo docker compose -p ci -f docker-compose.base-dev.yml -f docker-compose.dev.yml up --build
+   ```
 
-This will start the app in development mode, with hot-reloading enabled. The GraphQL playground will be available at http://localhost:3000/graphql.
+   This will start the app in development mode, with hotreloading enabled. The GraphQL playground will be available at [http://localhost:3000/graphql. ↗](http://localhost:3000/graphql.)
 
 4. Attach to the container:
 
-```bash
-sudo docker exec -it movietsgraphql-app-1 bash
-```
+   ````
+   sudo docker exec -it ci-app-1 bash
+   ```
 
 5. Create an admin account:
 
-```bash
-dsconfig
+   ```
+       node dist/create-admin.js
+   ```
 
-npx nest start --entryFile create-admin.js
+   It will prompt you for an email, password, and name to create the superuser account.
+
+## Testing
+Run the following command : 
 ```
-
-It will prompt you for an email, password, and name to create the superuser account.
+sudo ./test.sh
+```
+it will automatically do everything and exit with 0 status if everything work well
 
 ## Examples
 
-Here are some example GraphQL queries and mutations that can be used with this project:
+Here are some example GraphQL queries:
 
-1. Get all genres:
+1. Query all genres:
 
-```graphql
-query {
-    genres {
-        id
-        name
-    }
-}
-```
+   ````
+   query {
+       genres {
+           id
+           name
+       }
+   }
+   ```
 
-2. Get a specific genre:
+2. Query a specific album:
 
-```graphql
-query {
-    genre(id: "1") {
-        id
-        name
-    }
-}
-```
+   ````
+   query {
+       album(id: "<album_id>") {
+           id
+           title
+           releaseDate
+           cover
+           musics {
+               id
+               name
+               duration
+           }
+       }
+   }
+   ```
 
-3. Search for artists:
+3. Query all unapproved comments:
 
-```graphql
-query {
-    searchArtists(input: { text: "Tom" }) {
-        total
-        artists {
-            id
-            name
-        }
-    }
-}
-```
+   ````
+   query {
+       unapprovedComments(pagination: { limit: 10 }) {
+           id
+           text
+           isApproved
+           user {
+               id
+               name
+           }
+           music {
+               id
+               name
+           }
+       }
+   }
+   ```
 
-4. Get a specific movie:
+4. Create a new album:
 
-```graphql
-query {
-    movie(id: "1") {
-        id
-        name
-        plot
-        description
-        imdbScore
-        imdbRef
-        duration
-        releaseDate
-        backdrop
-        poster
-        gallery
-        genres {
-            id
-            name
-        }
-        artists {
-            artist {
-                id
-                name
-            }
-            contribution
-        }
-        downloadableAssets {
-            title
-            link
-            type
-        }
-        languages {
-            tag
-            for
-        }
-    }
-}
-```
+   ````
+   mutation {
+       createAlbum(input: {
+           title: "New Album",
+           cover: "...",
+           releaseDate: "2021-07-12",
+           musics: ["<music_id_1>", "<music_id_2>"]
+       }) {
+           id
+           title
+           releaseDate
+           cover
+           musics {
+               id
+               name
+               duration
+           }
+       }
+   }
+   ```
 
-5. Create a new movie:
+5. Update an existing album:
 
-```graphql
-mutation {
-    createMovie(
-        input: {
-            name: "Movie Name"
-            plot: "Movie Plot"
-            description: "Movie Description"
-            imdbScore: 8.5
-            imdbRef: "https://www.imdb.com/title/tt1375666/"
-            duration: 120
-            releaseDate: "2022-01-01T00:00:00Z"
-            backdrop: "/backdrop/backdrop.jpeg"
-            poster: "/poster/poster.jpeg"
-            gallery: ["/gallery/gallery1.jpeg", "/gallery/gallery2.jpeg"]
-            genreIds: ["1", "2"]
-            artists: [{ artistId: "1", contribution: director }]
-            downloadableAssets: [
-                {
-                    title: "Subtitle"
-                    link: "/subtitle/subtitle.vtt"
-                    type: subtitle
-                }
-            ]
-            languages: [{ tag: "en-US", for: original }]
-        }
-    ) {
-        id
-        name
-    }
-}
-```
+   ````
+   mutation {
+       updateAlbum(input: {
+           id: "<album_id>",
+           title: "Updated Album",
+           cover: "...",
+           releaseDate: "2021-07-15",
+           musics: ["<music_id_1>", "<music_id_2>", "<music_id_3>"]
+       }) {
+           id
+           title
+           releaseDate
+           cover
+           musics {
+               id
+               name
+               duration
+           }
+       }
+   }
+   ```
 
-6. Update a movie:
+6. Delete a comment:
 
-```graphql
-mutation {
-    updateMovie(
-        input: {
-            id: "1"
-            name: "New Movie Name"
-            plot: "New Movie Plot"
-            description: "New Movie Description"
-            imdbScore: 9.0
-            imdbRef: "https://www.imdb.com/title/tt1375667/"
-            duration: 150
-            releaseDate: "2022-02-02T00:00:00Z"
-            backdrop: "/backdrop/newbackdrop.jpeg"
-            poster: "/poster/newposter.jpeg"
-            gallery: ["/gallery/newgallery1.jpeg", "/gallery/newgallery2.jpeg"]
-            genreIds: ["2", "3"]
-            artists: [{ artistId: "2", contribution: actor }]
-            downloadableAssets: [
-                { title: "Sound", link: "/sound/sound.mp3", type: sound }
-            ]
-            languages: [{ tag: "fr-FR", for: dub }]
-        }
-    ) {
-        id
-        name
-    }
-}
-```
-
+   ````
+   mutation {
+       deleteComment(id: "<comment_id>")
+   }
+   ```
 ## API Documentation
 
-Here is a table describing all mutations and queries available in this project:
+The following table describes all the mutations and queries available in the API:
 
-| Type     | Name               | Arguments                          | Return Type      | Description                                              |
-| -------- | ------------------ | ---------------------------------- | ---------------- | -------------------------------------------------------- |
-| Query    | user               |                                    | User!            | Returns the currently logged in user                     |
-| Query    | genres             |                                    | [Genre!]!        | Returns a list of all genres                             |
-| Query    | genre              | id: String!                        | Genre            | Returns the genre with the specified ID                  |
-| Query    | artist             | id: String!                        | Artist           | Returns the artist with the specified ID                 |
-| Query    | searchArtists      | input: SearchArtistInput!          | PaginatedArtist! | Returns a list of artists that match the search criteria |
-| Query    | movie              | id: String!                        | Movie            | Returns the movie with the specified ID                  |
-| Query    | searchMovie        | input: SearchMovieInput!           | PaginatedMovies! | Returns a list of movies that match the search criteria  |
-| Query    | unapprovedComments | pagination: CursorBasedPagination! | [Comment!]!      | Returns a list of unapproved comments, with pagination   |
-| Mutation | register           | input: RegisterUserInput!          | AuthPayload!     | Registers a new user                                     |
-| Mutation | login              | input: LoginUserInput!             | AuthPayload!     | Logs in a user                                           |
-| Mutation | changeRole         | userId: String!, role: Role!       | User!            | Changes the role of a user                               |
-| Mutation | createGenre        | input: CreateGenreInput!           | Genre!           | Creates a new genre                                      |
-| Mutation | updateGenre        | input: UpdateGenreInput!           | Genre!           | Updates an existing genre                                |
-| Mutation | deleteArtist       | id: String!                        | Boolean!         | Deletes an artist with the specified ID                  |
-| Mutation | createArtist       | input: CreateArtistInput!          | Artist!          | Creates a new artist                                     |
-| Mutation | updateArtist       | input: UpdateArtistInput!          | Artist!          | Updates an existing artist                               |
-| Mutation | createMovie        | input: CreateMovieInput!           | Movie!           | Creates a new movie                                      |
-| Mutation | updateMovie        | input: UpdateMovieInput!           | Movie!           | Updates an existing movie                                |
-| Mutation | deleteMovie        | id: String!                        | Boolean!         | Deletes a movie with the specified ID                    |
-| Mutation | createComment      | input: CreateCommentInput!         | Comment!         | Creates a new comment                                    |
-| Mutation | updateComment      | input: UpdateCommentInput!         | Comment!         | Updates an existing comment                              |
-| Mutation | deleteComment      | id: String!                        | Boolean!         | Deletes a comment with the specified ID                  |
-| Mutation | approveComment     | id: String!                        | Comment!         | Approves a comment with the specified ID                 |
+| Query/Mutation                                | Description                                          |
+| --------------------------------------------- | ---------------------------------------------------- |
+| album(id: String!)                            | Query a specific album by its ID                      |
+| genres                                        | Query all genres                                     |
+| genre(id: String!)                            | Query a specific genre by its ID                      |
+| music(id: String!)                            | Query a specific song by its ID                       |
+| searchAlbums(input: SearchAlbumInput!)         | Search for albums based on specific criteria          |
+| searchMusic(input: SearchMusicInput!)          | Search for songs based on specific criteria           |
+| searchSingers(input: SearchSingerInput!)       | Search for singers based on specific criteria         |
+| singer(id: String!)                           | Query a specific singer by its ID                     |
+| unapprovedComments(pagination: PaginationInput!) | Query all unapproved comments                        |
+| user                                          | Query the current user                               |
+| approveComment(id: String!)                   | Approve a specific comment                           |
+| changeRole(role: UserRole!, userId: String!)  | Change the role of a specific user                    |
+| createAlbum(input: CreateAlbumInput!)          | Create a new album                                   |
+| createComment(input: CreateCommentInput!)      | Create a new comment                                 |
+| createGenre(input: CreateGenreInput!)          | Create a new genre                                   |
+| createMusic(input: CreateMusicInput!)          | Create a new song                                    |
+| createSinger(input: CreateSingerInput!)        | Create a new singer                                  |
+| deleteComment(id: String!)                     | Delete a specific comment                            |
+| deleteMusic(id: String!)                       | Delete a specific song                               |
+| deleteSinger(id: String!)                      | Delete a specific singer                             |
+| login(input: LoginUserInput!)                  | Log in a user                                       |
+| register(input: RegisterUserInput!)            | Register a new user                                  |
+| updateAlbum(input: UpdateAlbumInput!)          | Update an existing album                             |
+| updateComment(input: UpdateCommentInput!)      | Update an existing comment                           |
+| updateGenre(input: UpdateGenreInput!)          | Update an existing genre                             |
+| updateMusic(input: UpdateMusicInput!)          | Update an existing song                              |
+| updateSinger(input: UpdateSingerInput!)        | Update an existing singer                            |
 
 ## License
 
-This project is licensed under the GPL-3 license. Contributions are welcome! Please submit any issues or pull requests to the GitHub repository.
+This project is licensed under the GPL-3 license. Contributions are welcome, please follow the guidelines in the CONTRIBUTING.md file.

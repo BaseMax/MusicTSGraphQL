@@ -62,19 +62,16 @@ To use this project, follow these steps:
 
 1. Clone this repository:
 
-    ````
-    git clone https://github.com/basemax/musictsgraphql
+    ```
+    git clone https://github.com/basemax/MusicTSGraphQL
     ```
 
-    ````
 
 2. Install dependencies:
 
-    ````
+    ```
     npm install
     ```
-
-    ````
 
 3. Run the app using Docker Compose:
 
@@ -86,11 +83,9 @@ To use this project, follow these steps:
 
 4. Attach to the container:
 
-    ````
+    ```
     sudo docker exec -it ci-app-1 bash
     ```
-
-    ````
 
 5. Create an admin account:
 
@@ -115,7 +110,7 @@ Here are some example GraphQL queries:
 
 1. Query all genres:
 
-    ````
+    ```
     query {
         genres {
             id
@@ -124,11 +119,9 @@ Here are some example GraphQL queries:
     }
     ```
 
-    ````
-
 2. Query a specific album:
 
-    ````
+    ```
     query {
         album(id: "<album_id>") {
             id
@@ -144,11 +137,9 @@ Here are some example GraphQL queries:
     }
     ```
 
-    ````
-
 3. Query all unapproved comments:
 
-    ````
+    ```
     query {
         unapprovedComments(pagination: { limit: 10 }) {
             id
@@ -166,11 +157,9 @@ Here are some example GraphQL queries:
     }
     ```
 
-    ````
-
 4. Create a new album:
 
-    ````
+    ```
     mutation {
         createAlbum(input: {
             title: "New Album",
@@ -191,11 +180,9 @@ Here are some example GraphQL queries:
     }
     ```
 
-    ````
-
 5. Update an existing album:
 
-    ````
+    ```
     mutation {
         updateAlbum(input: {
             id: "<album_id>",
@@ -217,8 +204,6 @@ Here are some example GraphQL queries:
     }
     ```
 
-    ````
-
 6. Delete a comment:
 
 
@@ -234,33 +219,33 @@ The following table describes all the mutations and queries available in the API
 
 | Query/Mutation                                   | Description                                   |
 | ------------------------------------------------ | --------------------------------------------- |
-| album(id: String!)                               | Query a specific album by its ID              |
-| genres                                           | Query all genres                              |
-| genre(id: String!)                               | Query a specific genre by its ID              |
-| music(id: String!)                               | Query a specific song by its ID               |
-| searchAlbums(input: SearchAlbumInput!)           | Search for albums based on specific criteria  |
-| searchMusic(input: SearchMusicInput!)            | Search for songs based on specific criteria   |
-| searchSingers(input: SearchSingerInput!)         | Search for singers based on specific criteria |
-| singer(id: String!)                              | Query a specific singer by its ID             |
-| unapprovedComments(pagination: PaginationInput!) | Query all unapproved comments                 |
-| user                                             | Query the current user                        |
-| approveComment(id: String!)                      | Approve a specific comment                    |
-| changeRole(role: UserRole!, userId: String!)     | Change the role of a specific user            |
-| createAlbum(input: CreateAlbumInput!)            | Create a new album                            |
-| createComment(input: CreateCommentInput!)        | Create a new comment                          |
-| createGenre(input: CreateGenreInput!)            | Create a new genre                            |
-| createMusic(input: CreateMusicInput!)            | Create a new song                             |
-| createSinger(input: CreateSingerInput!)          | Create a new singer                           |
-| deleteComment(id: String!)                       | Delete a specific comment                     |
-| deleteMusic(id: String!)                         | Delete a specific song                        |
-| deleteSinger(id: String!)                        | Delete a specific singer                      |
-| login(input: LoginUserInput!)                    | Log in a user                                 |
-| register(input: RegisterUserInput!)              | Register a new user                           |
-| updateAlbum(input: UpdateAlbumInput!)            | Update an existing album                      |
-| updateComment(input: UpdateCommentInput!)        | Update an existing comment                    |
-| updateGenre(input: UpdateGenreInput!)            | Update an existing genre                      |
-| updateMusic(input: UpdateMusicInput!)            | Update an existing song                       |
-| updateSinger(input: UpdateSingerInput!)          | Update an existing singer                     |
+| `album(id: String!)`                               | Query a specific album by its ID              |
+| `genres`                                           | Query all genres                              |
+| `genre(id: String!)`                               | Query a specific genre by its ID              |
+| `music(id: String!)`                               | Query a specific song by its ID               |
+| `searchAlbums(input: SearchAlbumInput!)`           | Search for albums based on specific criteria  |
+| `searchMusic(input: SearchMusicInput!)`            | Search for songs based on specific criteria   |
+| `searchSingers(input: SearchSingerInput!)`         | Search for singers based on specific criteria |
+| `singer(id: String!)`                              | Query a specific singer by its ID             |
+| `unapprovedComments(pagination: PaginationInput!)` | Query all unapproved comments                 |
+| `user`                                             | Query the current user                        |
+| `approveComment(id: String!)`                      | Approve a specific comment                    |
+| `changeRole(role: UserRole!, userId: String!)`     | Change the role of a specific user            |
+| `createAlbum(input: CreateAlbumInput!)`            | Create a new album                            |
+| `createComment(input: CreateCommentInput!)`        | Create a new comment                          |
+| `createGenre(input: CreateGenreInput!)`            | Create a new genre                            |
+| `createMusic(input: CreateMusicInput!)`            | Create a new song                             |
+| `createSinger(input: CreateSingerInput!)`          | Create a new singer                           |
+| `deleteComment(id: String!)`                       | Delete a specific comment                     |
+| `deleteMusic(id: String!)`                         | Delete a specific song                        |
+| `deleteSinger(id: String!)`                        | Delete a specific singer                      |
+| `login(input: LoginUserInput!)`                    | Log in a user                                 |
+| `register(input: RegisterUserInput!)`              | Register a new user                           |
+| `updateAlbum(input: UpdateAlbumInput!)`            | Update an existing album                      |
+| `updateComment(input: UpdateCommentInput!)`        | Update an existing comment                    |
+| `updateGenre(input: UpdateGenreInput!)`            | Update an existing genre                      |
+| `updateMusic(input: UpdateMusicInput!)`            | Update an existing song                       |
+| `updateSinger(input: UpdateSingerInput!)`          | Update an existing singer                     |
 
 ## License
 

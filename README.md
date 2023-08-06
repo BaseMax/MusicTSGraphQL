@@ -62,20 +62,20 @@ To use this project, follow these steps:
 
 1. Clone this repository:
 
-    ```
+    ```bash
     git clone https://github.com/basemax/MusicTSGraphQL
     ```
 
 
 2. Install dependencies:
 
-    ```
+    ```bash
     npm install
     ```
 
 3. Run the app using Docker Compose:
 
-   ```
+   ```bash
    sudo docker compose -p ci -f docker-compose.base-dev.yml -f docker-compose.dev.yml up --build
    ```
 
@@ -83,13 +83,13 @@ To use this project, follow these steps:
 
 4. Attach to the container:
 
-    ```
+    ```bash
     sudo docker exec -it ci-app-1 bash
     ```
 
 5. Create an admin account:
 
-   ```
+   ```bash
    node dist/create-admin.js
    ```
 
@@ -98,7 +98,8 @@ To use this project, follow these steps:
 ## Testing
 
 Run the following command:
-```
+
+```bash
 sudo ./test.sh
 ```
 
@@ -110,7 +111,7 @@ Here are some example GraphQL queries:
 
 1. Query all genres:
 
-    ```
+    ```graphql
     query {
         genres {
             id
@@ -121,7 +122,7 @@ Here are some example GraphQL queries:
 
 2. Query a specific album:
 
-    ```
+    ```graphql
     query {
         album(id: "<album_id>") {
             id
@@ -139,7 +140,7 @@ Here are some example GraphQL queries:
 
 3. Query all unapproved comments:
 
-    ```
+    ```graphql
     query {
         unapprovedComments(pagination: { limit: 10 }) {
             id
@@ -159,7 +160,7 @@ Here are some example GraphQL queries:
 
 4. Create a new album:
 
-    ```
+    ```graphql
     mutation {
         createAlbum(input: {
             title: "New Album",
@@ -182,7 +183,7 @@ Here are some example GraphQL queries:
 
 5. Update an existing album:
 
-    ```
+    ```graphql
     mutation {
         updateAlbum(input: {
             id: "<album_id>",
@@ -207,7 +208,7 @@ Here are some example GraphQL queries:
 6. Delete a comment:
 
 
-   ```
+   ```graphql
    mutation {
        deleteComment(id: "<comment_id>")
    }

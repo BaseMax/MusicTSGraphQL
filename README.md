@@ -1,5 +1,7 @@
 # Music TS GraphQL
 
+This project is a GraphQL API built with TypeScript and Fastify, using the Mercurius plugin. It provides a backend server for a music site, allowing you to perform various operations such as managing songs and albums, retrieving information, adding comments, rating songs/albums, and more.
+
 ## Features
 
 -   Song and album management

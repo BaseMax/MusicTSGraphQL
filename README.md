@@ -1,12 +1,12 @@
 # Music TS GraphQL
 
-# Features
+## Features
 
 -   Song and album management
 -   Comment addition and rating
 -   Information retrieval
 
-# Stack
+## Stack
 
 This project is built using the following technologies:
 

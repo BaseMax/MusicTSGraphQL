@@ -81,7 +81,7 @@ To use this project, follow these steps:
    sudo docker compose -p ci -f docker-compose.base-dev.yml -f docker-compose.dev.yml up --build
    ```
 
-    This will start the app in development mode, with hotreloading enabled. The GraphQL playground will be available at [http://localhost:3000/graphql. ↗](http://localhost:3000/graphql.)
+    This will start the app in development mode, with hotreloading enabled. The GraphQL playground will be available at [http://localhost:3000/graphql](http://localhost:3000/graphql). ↗
 
 4. Attach to the container:
 

@@ -19,7 +19,7 @@
         "start:dev": "nodemon --watch \"src/**\" --ext \"ts,json\"  --ignore \"src/**/*.test.ts\" --exec 'tsc -p tsconfig.build.json&& node -r source-map-support/register dist/main' "
     },
     "dependencies": {
-        "@apollo/server": "^4.9.3",
+        "@apollo/server": "^5.4.0",
         "@as-integrations/fastify": "^2.0.0",
         "@aws-sdk/client-s3": "^3.345.0",
         "@fastify/multipart": "^8.3.1",
